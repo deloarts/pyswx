@@ -1,0 +1,27 @@
+[project]
+authors = [
+  {name = "Philip Delorenzo", email = "git@deloarts.com"},
+]
+classifiers = ["Operating System :: Microsoft :: Windows"]
+dependencies = [
+  "pywin32 (>=310,<311)",
+]
+description = ""
+name = "pyswx"
+readme = "README.md"
+requires-python = ">=3.12"
+version = "0.1.0"
+
+[tool.poetry]
+packages = [{include = "pyswx"}]
+
+[tool.poetry.group.dev.dependencies]
+pre-commit = "^4.2.0"
+pytest = "^8.3.5"
+black = "^25.1.0"
+pylint = "^3.3.7"
+isort = "^6.0.1"
+
+[build-system]
+build-backend = "poetry.core.masonry.api"
+requires = ["poetry-core>=2.0.0,<3.0.0"]

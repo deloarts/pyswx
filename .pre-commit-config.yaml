@@ -1,0 +1,37 @@
+# Note: Keep versions in sync with the poetry.lock file.
+# To install new hooks run `pre-commit install`.
+
+repos:
+  - repo: https://github.com/psf/black
+    rev: "25.1.0"
+    hooks:
+      - id: black
+
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: "v4.2.0"
+    hooks:
+      - id: check-added-large-files
+        args: ["--maxkb=2000"]
+      - id: "no-commit-to-branch"
+        args: ["--branch", "main"]
+
+  - repo: local
+    hooks:
+      # - id: pylint
+      #   name: pylint
+      #   entry: poetry run pylint pyswx/
+      #   language: system
+      #   always_run: true
+      #   pass_filenames: false
+      #   args:
+      #     - --rcfile=./.pylintrc
+      #     - --fail-under=8
+
+      - id: poetry-check
+        name: poetry-check
+        description: run poetry check to validate config
+        entry: poetry check
+        language: python
+        language_version: python3
+        pass_filenames: false
+        files: ^pyproject.toml$
