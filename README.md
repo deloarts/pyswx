@@ -11,7 +11,7 @@ A python wrapper for the SolidWorks API.
 
 **PySWX** is a wrapper for the SolidWorks API 2024, based on the [official help site](https://help.solidworks.com/2024/english/api/sldworksapiprogguide/Welcome.htm). It provides a typed interface and some useful features.
 
-> This project is in an early stage of development. The API is not complete and the documentation is not yet available. If you want to contribute to this project, please open an issue or a pull request. To see the current state of this project, check out the [development branch](https://github.com/deloarts/pyswx/tree/development).
+> ✏️ This project is in an early stage of development. The API is not complete and the documentation is not yet available. If you want to contribute to this project, please open an issue or a pull request. To see the current state of this project, check out the [development branch](https://github.com/deloarts/pyswx/tree/development).
 
 ## 1 installation
 
@@ -25,22 +25,23 @@ A python wrapper for the SolidWorks API.
 
 ### 1.2 pip
 
-**PySWX** isn't available on PyPi yet, but you still can install it via pip+ssh:
+```powershell
+python -m pip install pyswx
+```
+
+or
 
 ```powershell
 python -m pip install git+ssh://git@github.com/deloarts/pyswx.git
 ```
 
-If you're using poetry add this to you **pyproject.toml** file:
+If you're using poetry add it to you **pyproject.toml** file using:
 
-```toml
-[tool.poetry.dependencies]
-pyswx = { git = "ssh://git@github.com/deloarts/pyswx.git", branch="main" }
+```powershell
+poetry add pyswx
 ```
 
 ## 2 usage
-
-> ✏️ **PySWX** uses PEP8 style for methods, classes and variables.
 
 **PySWX** works with [VS Code Intellisense](https://code.visualstudio.com/docs/editing/intellisense) and provides type hints for the SolidWorks API:
 
@@ -49,9 +50,9 @@ pyswx = { git = "ssh://git@github.com/deloarts/pyswx.git", branch="main" }
 All methods and classes are documented with docstrings, which can be viewed in the Intellisense popup.
 Like in the example above you can refer to the official documentation of [IModelDocExtension](https://help.solidworks.com/2024/english/api/sldworksapi/SolidWorks.Interop.sldworks~SolidWorks.Interop.sldworks.IModelDocExtension.html).
 
+> ✏️ **PySWX** uses PEP8 style for methods, classes and variables.
+>
 > ✏️ **PySWX** is not completed, methods that aren't implemented yet will raise a `NotImplementedError` when called.
-
-For more examples see the [examples](/examples) folder.
 
 ### 2.1 example: open a part
 
@@ -102,6 +103,8 @@ part_model.extension.save_as_3(
 )
 ```
 
+For more examples see the [examples](/examples) folder.
+
 ### 2.2 tools
 
 **PySWX** comes with some tools to help you work with the SolidWorks API, e.g. the above code can be shortcutted with:
@@ -115,6 +118,8 @@ PATH_TO_PART = Path("C:\\path\\to\\your\\part.SLDPRT")
 swx = PySWX().application
 export_step(swx, PATH_TO_PART)
 ```
+
+For all tools check out the [tools](/tools) folder.
 
 ### 2.3 com object
 
@@ -151,8 +156,7 @@ Function GetConfigurationParams( _
 ```
 
 This method sets the `Params` and the `Values` via the given arguments, and returns only a bool (in this case `True`, if the method was successful).
-As this isn't possible in Python, the equivalent **PySWX** method returns a `Tuple`, the method return value and all ByRef-argument values.
-As an example for this method, Python method would look like this:
+As this isn't possible in Python, the equivalent **PySWX** method returns a `Tuple`, the method return value and all ByRef-argument values:
 
 ```Python
 type ParamsRetrieved = bool
@@ -166,6 +170,7 @@ def get_configuration_params(self, config_name: str) -> Tuple[ParamsRetrieved, P
 ### 2.5 obsolete methods and properties
 
 The SolidWorks API exposes obsolete methods and properties. Those are not included in **PySWX**.
+You are still able to access them via the `com_object`.
 
 ## 3 developing
 
@@ -262,7 +267,6 @@ indicator | status | description
 🟠 | Methods Imported | All SolidWorks API methods are imported, but aren't fully implemented yet
 🔴 | Not Completed | The module is not completed and some SolidWorks API methods may be missing
 
-
 ### 3.4 new revision checklist
 
 1. Update **dependencies**: `poetry update`
@@ -273,7 +277,7 @@ indicator | status | description
 3. Run all **tests**: `poetry run pytest`
 4. Check **pylint** output: `poetry run pylint pyswx/`
 5. Update the **lockfile**: `poetry lock`
-6. Update the **requirements.txt**: `poetry export --with dev -f requirements.txt -o requirements.txt`
+6. Update the **requirements.txt**: `poetry export -f requirements.txt -o requirements.txt`
 7. **Build** the package: `poetry build`
 
 ## 4 license
@@ -282,7 +286,7 @@ indicator | status | description
 
 ## 5 changelog
 
-[**v0.1.0**](https://github.com/deloarts/pyswx/releases/tag/v0.1.0): First stable version.  
+[**v0.0.1**](https://github.com/deloarts/pyswx/releases/tag/v0.0.1): First stable version.  
 
 ## 6 to do
 

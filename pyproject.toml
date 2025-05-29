@@ -10,7 +10,7 @@ description = ""
 name = "pyswx"
 readme = "README.md"
 requires-python = ">=3.12"
-version = "0.1.0"
+version = "0.0.1"
 
 [tool.poetry]
 packages = [{include = "pyswx"}]
@@ -21,6 +21,9 @@ pytest = "^8.3.5"
 black = "^25.1.0"
 pylint = "^3.3.7"
 isort = "^6.0.1"
+
+[tool.poetry.requires-plugins]
+poetry-plugin-export = ">=1.8"
 
 [build-system]
 build-backend = "poetry.core.masonry.api"
