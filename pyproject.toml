@@ -6,7 +6,7 @@ classifiers = ["Operating System :: Microsoft :: Windows"]
 dependencies = [
   "pywin32 (>=310,<311)",
 ]
-description = ""
+description = "A python wrapper for the SolidWorks API."
 name = "pyswx"
 readme = "README.md"
 requires-python = ">=3.12"
