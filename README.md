@@ -1,15 +1,15 @@
 # PySWX
 
+<img src="https://github.com/deloarts/pyswx/blob/main/assets/images/icon.png?raw=true" width="200" height="200">
+
 A python wrapper for the SolidWorks API.
 
-![state](https://img.shields.io/badge/State-wip-red.svg?style=for-the-badge)
-![version](https://img.shields.io/github/v/release/deloarts/pyswx?style=for-the-badge&color=orange)
-
-[![python](https://img.shields.io/badge/Python-3.12-blue.svg?style=for-the-badge)](https://www.python.org/downloads/)
-![sldworks](https://img.shields.io/badge/SolidWorks-2024+-blue.svg?style=for-the-badge)
-![OS](https://img.shields.io/badge/OS-WIN11-blue.svg?style=for-the-badge)
-
-<img src="https://github.com/deloarts/pyswx/blob/main/assets/images/icon.png?raw=true" width="200" height="200">
+![state](https://img.shields.io/badge/State-beta-red.svg)
+![version](https://img.shields.io/github/v/release/deloarts/pyswx?color=orange)
+[![python](https://img.shields.io/badge/Python-3.12-blue.svg)](https://www.python.org/downloads/)
+![sldworks](https://img.shields.io/badge/SolidWorks-2024+-blue.svg)
+![OS](https://img.shields.io/badge/OS-WIN11-blue.svg)
+[![Publish](https://github.com/deloarts/pyswx/actions/workflows/publish-pypi.yml/badge.svg)](https://github.com/deloarts/pyswx/actions/workflows/publish-pypi.yml)
 
 **PySWX** is a wrapper for the SolidWorks API 2024, based on the [official help site](https://help.solidworks.com/2024/english/api/sldworksapiprogguide/Welcome.htm). It provides a typed interface and some useful features.
 
