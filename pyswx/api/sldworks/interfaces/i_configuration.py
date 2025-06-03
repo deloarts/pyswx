@@ -12,6 +12,7 @@ from pyswx.api.sldworks.interfaces.i_component_2 import IComponent2
 from pyswx.api.sldworks.interfaces.i_custom_property_manager import (
     ICustomPropertyManager,
 )
+from pyswx.api.swconst.enumerations import SWChildComponentInBOMOptionE
 
 
 class IConfiguration(BaseInterface):
@@ -23,6 +24,20 @@ class IConfiguration(BaseInterface):
         return f"IConfiguration({self.com_object})"
 
     @property
+    def child_component_display_in_bom(self) -> SWChildComponentInBOMOptionE:
+        """
+        Gets or sets the child component display option of a configuration in a Bill of Materials (BOM) for an assembly document.
+
+        Reference:
+        https://help.solidworks.com/2024/English/api/sldworksapi/SolidWorks.Interop.sldworks~SolidWorks.Interop.sldworks.IConfiguration~ChildComponentDisplayInBOM.html
+        """
+        return SWChildComponentInBOMOptionE(self.com_object.ChildComponentDisplayInBOM)
+
+    @child_component_display_in_bom.setter
+    def child_component_display_in_bom(self, value: SWChildComponentInBOMOptionE) -> None:
+        self.com_object.ChildComponentDisplayInBOM = value.value
+
+    @property
     def custom_property_manager(self) -> ICustomPropertyManager:
         """
         Gets the custom property information for this configuration.
@@ -31,6 +46,20 @@ class IConfiguration(BaseInterface):
         https://help.solidworks.com/2018/english/api/sldworksapi/SolidWorks.Interop.sldworks~SolidWorks.Interop.sldworks.IConfiguration~CustomPropertyManager.html
         """
         return ICustomPropertyManager(self.com_object.CustomPropertyManager)
+
+    @property
+    def name(self) -> str:
+        """
+        Gets or sets the configuration name.
+
+        Reference:
+        https://help.solidworks.com/2021/English/api/sldworksapi/SolidWorks.Interop.sldworks~SolidWorks.Interop.sldworks.IConfiguration~Name.html
+        """
+        return str(self.com_object.Name)
+
+    @name.setter
+    def name(self, value: str) -> None:
+        self.com_object.Name = value
 
     def get_root_component3(self, resolve: bool) -> IComponent2 | None:
         """

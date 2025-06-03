@@ -10,18 +10,18 @@ Status: 🔴
 from pathlib import Path
 from typing import List
 
-from pythoncom import VT_BYREF
-from pythoncom import VT_I4
-from win32com.client import VARIANT
-
 from pyswx.api.base_interface import BaseInterface
 from pyswx.api.sldworks.interfaces.i_configuration import IConfiguration
 from pyswx.api.sldworks.interfaces.i_configuration_manager import IConfigurationManager
 from pyswx.api.sldworks.interfaces.i_model_doc_extension import IModelDocExtension
-from pyswx.api.swconst.enumerations import SWDocumentTypesE
-from pyswx.api.swconst.enumerations import SWFileSaveErrorE
-from pyswx.api.swconst.enumerations import SWFileSaveWarningE
-from pyswx.api.swconst.enumerations import SWSaveAsOptionsE
+from pyswx.api.swconst.enumerations import (
+    SWDocumentTypesE,
+    SWFileSaveErrorE,
+    SWFileSaveWarningE,
+    SWSaveAsOptionsE,
+)
+from pythoncom import VT_BYREF, VT_I4
+from win32com.client import VARIANT
 
 
 class IModelDoc2(BaseInterface):

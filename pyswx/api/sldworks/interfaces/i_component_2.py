@@ -20,6 +20,7 @@ from win32com.client import VARIANT
 
 from pyswx.api.base_interface import BaseInterface
 from pyswx.api.swconst.enumerations import SWComponentSuppressionStateE
+from pyswx.api.swconst.enumerations import SWDocumentTypesE
 from pyswx.api.swconst.enumerations import SWInConfigurationOptsE
 
 if TYPE_CHECKING:
@@ -58,9 +59,21 @@ class IComponent2(BaseInterface):
         com_object = self.com_object.GetChildren
         return [IComponent2(i) for i in com_object]
 
-    def get_exclude_from_bom2(
-        self, config_opt: SWInConfigurationOptsE, config_names: List[str] | None
-    ) -> List[bool]:
+    @property
+    def referenced_configuration(self) -> str:
+        """
+        Gets or sets the active configuration used by this component.
+
+        Reference:
+        https://help.solidworks.com/2024/english/api/sldworksapi/SolidWorks.Interop.sldworks~SolidWorks.Interop.sldworks.IComponent2~ReferencedConfiguration.html
+        """
+        return self.com_object.ReferencedConfiguration
+
+    @referenced_configuration.setter
+    def referenced_configuration(self, value: str) -> None:
+        self.com_object.referenced_configuration = value
+
+    def get_exclude_from_bom2(self, config_opt: SWInConfigurationOptsE, config_names: List[str] | None) -> List[bool]:
         """
         Gets whether this component is excluded from the bills of materials (BOMs) in the specified configurations.
 
@@ -69,9 +82,7 @@ class IComponent2(BaseInterface):
         """
         in_config_opt = VARIANT(VT_I4, config_opt.value)
         in_config_names = (
-            VARIANT(VT_BSTR | VT_ARRAY, [str(i) for i in config_names])
-            if config_names
-            else VARIANT(VT_NULL, None)
+            VARIANT(VT_BSTR | VT_ARRAY, [str(i) for i in config_names]) if config_names else VARIANT(VT_NULL, None)
         )
 
         com_object = self.com_object.GetExcludeFromBOM2(in_config_opt, in_config_names)
@@ -98,6 +109,16 @@ class IComponent2(BaseInterface):
         com_object = self.com_object.GetModelDoc2
         return IModelDoc2(com_object) if com_object else None
 
+    def get_parent(self) -> "IComponent2":
+        """
+        Gets the parent component.
+
+        Reference:
+        https://help.solidworks.com/2024/english/api/sldworksapi/SolidWorks.Interop.sldworks~SolidWorks.Interop.sldworks.IComponent2~GetParent.html
+        """
+        com_object = self.com_object.GetParent
+        return IComponent2(com_object)
+
     def get_path_name(self) -> Path:
         """
         Gets the full path name for this component.
@@ -115,6 +136,15 @@ class IComponent2(BaseInterface):
         https://help.solidworks.com/2024/english/api/sldworksapi/SolidWorks.Interop.sldworks~SolidWorks.Interop.sldworks.IComponent2~GetSuppression2.html
         """
         return SWComponentSuppressionStateE(self.com_object.GetSuppression2)
+
+    def get_type(self) -> SWDocumentTypesE:
+        """
+        Gets this lightweight assembly component's document type.
+
+        Reference:
+        https://help.solidworks.com/2024/english/api/sldworksapi/SolidWorks.Interop.sldworks~SolidWorks.Interop.sldworks.IComponent2~GetType.html
+        """
+        return SWDocumentTypesE(self.com_object.GetType)
 
     def is_envelope(self) -> bool:
         """

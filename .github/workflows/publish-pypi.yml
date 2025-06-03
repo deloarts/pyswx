@@ -1,8 +1,9 @@
 name: Publish
 
 on:
-  release:
-    types: [created]
+  push:
+    tags:
+      - "v*"
 
 permissions:
   contents: read
@@ -10,7 +11,7 @@ permissions:
 jobs:
   pypi-publish:
     name: Upload release to PyPI
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     environment:
       name: pypi
       url: https://pypi.org/project/pyswx/

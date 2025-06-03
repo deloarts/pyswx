@@ -9,6 +9,8 @@ A python wrapper for the SolidWorks API.
 ![sldworks](https://img.shields.io/badge/SolidWorks-2024+-blue.svg?style=for-the-badge)
 ![OS](https://img.shields.io/badge/OS-WIN11-blue.svg?style=for-the-badge)
 
+<img src="https://github.com/deloarts/pyswx/blob/main/assets/images/icon.png?raw=true" width="200" height="200">
+
 **PySWX** is a wrapper for the SolidWorks API 2024, based on the [official help site](https://help.solidworks.com/2024/english/api/sldworksapiprogguide/Welcome.htm). It provides a typed interface and some useful features.
 
 > ✏️ This project is in an early stage of development. The API is not complete and the documentation is not yet available. If you want to contribute to this project, please open an issue or a pull request. To see the current state of this project, check out the [development branch](https://github.com/deloarts/pyswx/tree/development).
@@ -45,7 +47,7 @@ poetry add pyswx
 
 **PySWX** works with [VS Code Intellisense](https://code.visualstudio.com/docs/editing/intellisense) and provides type hints for the SolidWorks API:
 
-![intellisense](/assets/images/intellisense.png)
+![/assets/images/intellisense.png](https://github.com/deloarts/pyswx/blob/main/assets/images/intellisense.png?raw=true)
 
 All methods and classes are documented with docstrings, which can be viewed in the Intellisense popup.
 Like in the example above you can refer to the official documentation of [IModelDocExtension](https://help.solidworks.com/2024/english/api/sldworksapi/SolidWorks.Interop.sldworks~SolidWorks.Interop.sldworks.IModelDocExtension.html).
@@ -103,7 +105,7 @@ part_model.extension.save_as_3(
 )
 ```
 
-For more examples see the [examples](/examples) folder.
+For more examples see the [examples](https://github.com/deloarts/pyswx/tree/main/examples) folder.
 
 ### 2.2 tools
 
@@ -119,7 +121,7 @@ swx = PySWX().application
 export_step(swx, PATH_TO_PART)
 ```
 
-For all tools check out the [tools](/tools) folder.
+For all tools check out the [tools]([/tools](https://github.com/deloarts/pyswx/tree/main/pyswx/tools)) folder.
 
 ### 2.3 com object
 
@@ -231,7 +233,7 @@ If you prefer the environment inside the projects root, use:
 poetry config virtualenvs.in-project true
 ```
 
-> ⚠️ Make sure not to commit the virtual environment to GitHub. See [.gitignore](.gitignore) to find out which folders are ignored.
+> ⚠️ Make sure not to commit the virtual environment to GitHub. See **.gitignore** to find out which folders are ignored.
 
 #### 3.2.2 install
 
@@ -286,6 +288,7 @@ indicator | status | description
 
 ## 5 changelog
 
+[**v0.1.0**](https://github.com/deloarts/pyswx/releases/tag/v0.1.0): Add new interfaces and properties for IComponent2, IConfiguration, IModelDoc2, ISldWorks and ISwAddin.  
 [**v0.0.1**](https://github.com/deloarts/pyswx/releases/tag/v0.0.1): First stable version.  
 
 ## 6 to do
