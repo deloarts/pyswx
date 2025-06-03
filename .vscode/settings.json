@@ -1,5 +1,6 @@
 {
     "cSpell.words": [
+        "Addin",
         "Bitmask",
         "BSTR",
         "pyswx",
@@ -8,7 +9,8 @@
         "sldworks",
         "sldworks_application",
         "SOLIDWORKS",
-        "swconst"
+        "swconst",
+        "SWPUBLISHED"
     ],
     "python.analysis.extraPaths": ["./pyswx"],
     "python.testing.pytestArgs": ["tests"],
