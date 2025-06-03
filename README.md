@@ -288,6 +288,7 @@ indicator | status | description
 
 ## 5 changelog
 
+[**v0.1.0**](https://github.com/deloarts/pyswx/releases/tag/v0.1.0): Add new interfaces and properties for IComponent2, IConfiguration, IModelDoc2, ISldWorks and ISwAddin.  
 [**v0.0.1**](https://github.com/deloarts/pyswx/releases/tag/v0.0.1): First stable version.  
 
 ## 6 to do
