@@ -24,6 +24,7 @@ from pyswx.api.sldworks.interfaces.i_document_specification import (
     IDocumentSpecification,
 )
 from pyswx.api.sldworks.interfaces.i_export_pdf_data import IExportPdfData
+from pyswx.api.sldworks.interfaces.i_frame import IFrame
 from pyswx.api.sldworks.interfaces.i_model_doc_2 import IModelDoc2
 from pyswx.api.swconst.enumerations import SWApplicationTypeE
 from pyswx.api.swconst.enumerations import SWCloseReopenErrorE
@@ -366,9 +367,7 @@ class ISldWorks(BaseInterface):
         com_object = self.com_object.CloseAllDocuments(in_include_unsaved)
         return bool(com_object)
 
-    def close_and_reopen(
-        self, doc: IModelDoc2, option: SWCloseReopenOptionE
-    ) -> Tuple[SWCloseReopenErrorE, IModelDoc2]:
+    def close_and_reopen(self, doc: IModelDoc2, option: SWCloseReopenOptionE) -> Tuple[SWCloseReopenErrorE, IModelDoc2]:
         """
         Closes and reopens the specified drawing document without unloading its references from memory.
 
@@ -539,6 +538,15 @@ class ISldWorks(BaseInterface):
         Exports data for the specified Toolbox standard.
         """
         raise NotImplementedError
+
+    def frame(self) -> IFrame:
+        """
+        Gets the SOLIDWORKS main frame.
+
+        Reference:
+        https://help.solidworks.com/2024/english/api/sldworksapi/SolidWorks.Interop.sldworks~SolidWorks.Interop.sldworks.IFrame_members.html
+        """
+        return IFrame(self.com_object.Frame)
 
     def get_3dexperience_state(self):
         """
@@ -1392,9 +1400,7 @@ class ISldWorks(BaseInterface):
                 out_warnings = SWFileLoadWarningE(value=in_specification.value.Warning)
                 self.logger.warning(out_warnings.name)
             except ValueError:
-                self.logger.error(
-                    f"Unknown SWFileLoadWarning: {in_specification.value.Warning}"
-                )
+                self.logger.error(f"Unknown SWFileLoadWarning: {in_specification.value.Warning}")
 
         if in_specification.value.Error != 0:
             out_errors = SWFileLoadErrorE(value=in_specification.value.Error)

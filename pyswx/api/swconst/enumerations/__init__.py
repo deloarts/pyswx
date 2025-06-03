@@ -82,4 +82,5 @@ from pyswx.api.swconst.enumerations.sw_save_as_version_e import SWSaveAsVersionE
 from pyswx.api.swconst.enumerations.sw_save_items_path_error_e import (
     SWSaveItemsPathErrorE,
 )
+from pyswx.api.swconst.enumerations.sw_select_type_e import SWSelectTypeE
 from pyswx.api.swconst.enumerations.sw_task_pane_tab_e import SWTaskPaneTabE
