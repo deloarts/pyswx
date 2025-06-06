@@ -20,9 +20,7 @@ from pythoncom import VT_I4
 from win32com.client import VARIANT
 
 from pyswx.api.base_interface import BaseInterface
-from pyswx.api.sldworks.interfaces.i_document_specification import (
-    IDocumentSpecification,
-)
+from pyswx.api.sldworks.interfaces.i_document_specification import IDocumentSpecification
 from pyswx.api.sldworks.interfaces.i_export_pdf_data import IExportPdfData
 from pyswx.api.sldworks.interfaces.i_frame import IFrame
 from pyswx.api.sldworks.interfaces.i_model_doc_2 import IModelDoc2
@@ -1404,8 +1402,8 @@ class ISldWorks(BaseInterface):
 
         if in_specification.value.Error != 0:
             out_errors = SWFileLoadErrorE(value=in_specification.value.Error)
-            self.logger.error(out_errors)
-            raise Exception(out_errors)
+            self.logger.error(out_errors.name)
+            raise Exception(out_errors.name)
 
         return IModelDoc2(com_object) if com_object else None
 

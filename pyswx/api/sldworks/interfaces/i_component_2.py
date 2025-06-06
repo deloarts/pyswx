@@ -49,16 +49,6 @@ class IComponent2(BaseInterface):
     def name2(self, value: str):
         self.com_object.Name2 = value
 
-    def get_children(self) -> List["IComponent2"]:
-        """
-        Gets all of the children components of this component.
-
-        Reference:
-        https://help.solidworks.com/2024/english/api/sldworksapi/SolidWorks.Interop.sldworks~SolidWorks.Interop.sldworks.IComponent2~GetChildren.html
-        """
-        com_object = self.com_object.GetChildren
-        return [IComponent2(i) for i in com_object]
-
     @property
     def referenced_configuration(self) -> str:
         """
@@ -72,6 +62,16 @@ class IComponent2(BaseInterface):
     @referenced_configuration.setter
     def referenced_configuration(self, value: str) -> None:
         self.com_object.referenced_configuration = value
+
+    def get_children(self) -> List["IComponent2"]:
+        """
+        Gets all of the children components of this component.
+
+        Reference:
+        https://help.solidworks.com/2024/english/api/sldworksapi/SolidWorks.Interop.sldworks~SolidWorks.Interop.sldworks.IComponent2~GetChildren.html
+        """
+        com_object = self.com_object.GetChildren
+        return [IComponent2(i) for i in com_object]
 
     def get_exclude_from_bom2(self, config_opt: SWInConfigurationOptsE, config_names: List[str] | None) -> List[bool]:
         """
@@ -109,7 +109,7 @@ class IComponent2(BaseInterface):
         com_object = self.com_object.GetModelDoc2
         return IModelDoc2(com_object) if com_object else None
 
-    def get_parent(self) -> "IComponent2":
+    def get_parent(self) -> "IComponent2 | None":
         """
         Gets the parent component.
 
@@ -117,7 +117,7 @@ class IComponent2(BaseInterface):
         https://help.solidworks.com/2024/english/api/sldworksapi/SolidWorks.Interop.sldworks~SolidWorks.Interop.sldworks.IComponent2~GetParent.html
         """
         com_object = self.com_object.GetParent
-        return IComponent2(com_object)
+        return IComponent2(com_object) if com_object else None
 
     def get_path_name(self) -> Path:
         """

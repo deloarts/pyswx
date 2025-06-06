@@ -30,17 +30,14 @@ jobs:
         run: |
           curl -sSL https://install.python-poetry.org | python - -y
 
-      - name: Update PATH
-        run: echo "$HOME/.local/bin" >> $GITHUB_PATH
-
       - name: Update Poetry configuration
-        run: poetry config virtualenvs.create false
+        run: C:\Users\runneradmin\AppData\Roaming\Python\Scripts\poetry config virtualenvs.create false
 
       - name: Install dependencies
-        run: poetry install --sync --no-interaction
+        run: C:\Users\runneradmin\AppData\Roaming\Python\Scripts\poetry install --sync --no-interaction
 
       - name: Package project
-        run: poetry build
+        run: C:\Users\runneradmin\AppData\Roaming\Python\Scripts\poetry build
 
       - name: Publish package distributions to PyPI
         uses: pypa/gh-action-pypi-publish@release/v1
