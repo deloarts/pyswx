@@ -10,18 +10,19 @@ Status: 🔴
 from pathlib import Path
 from typing import List
 
+from pythoncom import VT_BSTR
+from pythoncom import VT_BYREF
+from pythoncom import VT_I4
+from win32com.client import VARIANT
+
 from pyswx.api.base_interface import BaseInterface
 from pyswx.api.sldworks.interfaces.i_configuration import IConfiguration
 from pyswx.api.sldworks.interfaces.i_configuration_manager import IConfigurationManager
 from pyswx.api.sldworks.interfaces.i_model_doc_extension import IModelDocExtension
-from pyswx.api.swconst.enumerations import (
-    SWDocumentTypesE,
-    SWFileSaveErrorE,
-    SWFileSaveWarningE,
-    SWSaveAsOptionsE,
-)
-from pythoncom import VT_BYREF, VT_I4
-from win32com.client import VARIANT
+from pyswx.api.swconst.enumerations import SWDocumentTypesE
+from pyswx.api.swconst.enumerations import SWFileSaveErrorE
+from pyswx.api.swconst.enumerations import SWFileSaveWarningE
+from pyswx.api.swconst.enumerations import SWSaveAsOptionsE
 
 
 class IModelDoc2(BaseInterface):
@@ -80,6 +81,16 @@ class IModelDoc2(BaseInterface):
         """
         com_object = self.com_object.GetPathName
         return Path(com_object)
+
+    def get_title(self) -> str:
+        """
+        Gets the title of the document that appears in the active window's title bar.
+
+        Reference:
+        https://help.solidworks.com/2018/english/api/sldworksapi/solidworks.interop.sldworks~solidworks.interop.sldworks.imodeldoc2~gettitle.html
+        """
+        com_object = self.com_object.GetTitle
+        return str(com_object)
 
     def get_type(self) -> SWDocumentTypesE:
         """Gets the type of the document.
@@ -945,3 +956,15 @@ class IModelDoc2(BaseInterface):
     def force_release_locks(self):
         """Releases file system locks on a file and detaches the file."""
         raise NotImplementedError
+
+    def show_configuration2(self, configuration_name: str) -> bool:
+        """
+        Shows the named configuration by switching to that configuration and making it the active configuration.
+
+        Reference:
+        https://help.solidworks.com/2021/english/api/sldworksapi/SOLIDWORKS.Interop.sldworks~SOLIDWORKS.Interop.sldworks.IModelDoc2~ShowConfiguration2.html
+        """
+        in_configuration_name = VARIANT(VT_BSTR, configuration_name)
+
+        com_object = self.com_object.ShowConfiguration2(in_configuration_name)
+        return bool(com_object)
