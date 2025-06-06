@@ -63,9 +63,7 @@ def export_drawing(
     if export_path is None:
         export_path = drawing_model.get_path_name().with_suffix(f".{export_type}")
 
-    export_data = swx.get_export_file_data(
-        file_type=SWExportDataFileType_e.SW_EXPORT_PDF_DATA
-    )
+    export_data = swx.get_export_file_data(file_type=SWExportDataFileType_e.SW_EXPORT_PDF_DATA)
 
     if view_pdf_afterwards:
         export_data.view_pdf_after_saving = True
