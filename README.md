@@ -1,7 +1,5 @@
 # PySWX
 
-<img src="https://github.com/deloarts/pyswx/blob/main/assets/images/icon.png?raw=true" width="200" height="200">
-
 A python wrapper for the SolidWorks API.
 
 ![state](https://img.shields.io/badge/State-beta-red.svg)
@@ -10,6 +8,10 @@ A python wrapper for the SolidWorks API.
 ![sldworks](https://img.shields.io/badge/SolidWorks-2024+-blue.svg)
 ![OS](https://img.shields.io/badge/OS-WIN11-blue.svg)
 [![Publish](https://github.com/deloarts/pyswx/actions/workflows/publish-pypi.yml/badge.svg)](https://github.com/deloarts/pyswx/actions/workflows/publish-pypi.yml)
+
+<img src="https://github.com/deloarts/pyswx/blob/main/assets/images/icon.png?raw=true" width="200" height="200">
+<br>
+<br>
 
 **PySWX** is a wrapper for the SolidWorks API 2024, based on the [official help site](https://help.solidworks.com/2024/english/api/sldworksapiprogguide/Welcome.htm). It provides a typed interface and some useful features.
 
@@ -288,6 +290,7 @@ indicator | status | description
 
 ## 5 changelog
 
+[**v0.1.1**](https://github.com/deloarts/pyswx/releases/tag/v0.1.1): Enhance IModelDoc2 and ISldWorks interfaces with new methods and clean up imports.  
 [**v0.1.0**](https://github.com/deloarts/pyswx/releases/tag/v0.1.0): Add new interfaces and properties for IComponent2, IConfiguration, IModelDoc2, ISldWorks and ISwAddin.  
 [**v0.0.1**](https://github.com/deloarts/pyswx/releases/tag/v0.0.1): First stable version.  
 
