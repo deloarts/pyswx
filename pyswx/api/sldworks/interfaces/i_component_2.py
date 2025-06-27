@@ -22,7 +22,9 @@ from win32com.client import VARIANT
 
 from pyswx.api.base_interface import BaseInterface
 from pyswx.api.sldworks.interfaces.i_custom_property_manager import ICustomPropertyManager
+from pyswx.api.sldworks.interfaces.i_enum_bodies_2 import IEnumBodies2
 from pyswx.api.sldworks.interfaces.i_math_transform import IMathTransform
+from pyswx.api.swconst.enumerations import SWBodyTypeE
 from pyswx.api.swconst.enumerations import SWComponentSolvingOptionE
 from pyswx.api.swconst.enumerations import SWComponentSuppressionStateE
 from pyswx.api.swconst.enumerations import SWDocumentTypesE
@@ -277,6 +279,39 @@ class IComponent2(BaseInterface):
         in_value = VARIANT(VT_BOOL, value)
         self.com_object.Visible = in_value
 
+    def add_property_extension(self, property_extension: int | float | str) -> int:
+        """
+        Adds a property extension to this component.
+
+        Reference:
+        https://help.solidworks.com/2024/english/api/sldworksapi/SolidWorks.Interop.sldworks~SolidWorks.Interop.sldworks.IComponent2~AddPropertyExtension.html
+        """
+        in_property_extension = VARIANT(VT_I4 | VT_R8 | VT_BSTR, property_extension)
+        com_object = self.com_object.AddPropertyExtension(in_property_extension)
+        return int(com_object)
+
+    def de_select(self) -> bool:
+        """
+        Deselects this component.
+
+        Reference:
+        https://help.solidworks.com/2024/english/api/sldworksapi/SolidWorks.Interop.sldworks~SolidWorks.Interop.sldworks.IComponent2~DeSelect.html
+        """
+        return bool(self.com_object.DeSelect)
+
+    def enum_bodies3(self, body_type: SWBodyTypeE, visible_only: bool) -> IEnumBodies2:
+        """
+        Gets the bodies in the component in a multibody part.
+
+        Reference:
+        https://help.solidworks.com/2024/english/api/sldworksapi/SolidWorks.Interop.sldworks~SolidWorks.Interop.sldworks.IComponent2~EnumBodies3.html
+        """
+        in_body_type = VARIANT(VT_I4, body_type.value)
+        in_visible_only = VARIANT(VT_BOOL, visible_only)
+
+        com_object = self.com_object.EnumBodies3(in_body_type, in_visible_only)
+        return IEnumBodies2(com_object)
+
     def get_children(self) -> List["IComponent2"]:
         """
         Gets all of the children components of this component.
@@ -377,5 +412,4 @@ class IComponent2(BaseInterface):
         https://help.solidworks.com/2024/english/api/sldworksapi/solidworks.interop.sldworks~solidworks.interop.sldworks.icomponent2~ishidden.html
         """
         in_consider_suppressed = VARIANT(VT_BOOL, consider_suppressed)
-
         return bool(self.com_object.IsHidden(in_consider_suppressed))
