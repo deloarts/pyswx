@@ -10,9 +10,11 @@ Status: 🔴
 from pathlib import Path
 from typing import List
 
+from pythoncom import VT_ARRAY
 from pythoncom import VT_BSTR
 from pythoncom import VT_BYREF
 from pythoncom import VT_I4
+from pythoncom import VT_R8
 from win32com.client import VARIANT
 
 from pyswx.api.base_interface import BaseInterface
@@ -52,6 +54,38 @@ class IModelDoc2(BaseInterface):
         https://help.solidworks.com/2024/english/api/sldworksapi/solidworks.interop.sldworks~solidworks.interop.sldworks.imodeldoc2~extension.html
         """
         return IModelDocExtension(self.com_object.Extension)
+
+    @property
+    def i_material_property_values(self) -> List[float]:
+        """
+        Gets the material property values for this component.
+
+        Reference:
+        https://help.solidworks.com/2024/english/api/sldworksapi/SolidWorks.Interop.sldworks~SolidWorks.Interop.sldworks.IModelDoc2~IMaterialPropertyValues.html
+        """
+        com_object = self.com_object.IMaterialPropertyValues
+        return [float(i) for i in com_object]
+
+    @i_material_property_values.setter
+    def i_material_property_values(self, values: List[float]) -> None:
+        in_values = VARIANT(VT_ARRAY | VT_R8, values)
+        self.com_object.IMaterialPropertyValues = in_values
+
+    @property
+    def material_property_values(self) -> List[float]:
+        """
+        Gets the material property values for this component.
+
+        Reference:
+        https://help.solidworks.com/2024/english/api/sldworksapi/SolidWorks.Interop.sldworks~SolidWorks.Interop.sldworks.IModelDoc2~MaterialPropertyValues.html
+        """
+        com_object = self.com_object.MaterialPropertyValues
+        return [float(i) for i in com_object]
+
+    @material_property_values.setter
+    def material_property_values(self, values: List[float]) -> None:
+        in_values = VARIANT(VT_ARRAY | VT_R8, values)
+        self.com_object.MaterialPropertyValues = in_values
 
     def insert_object(self) -> None:
         """
