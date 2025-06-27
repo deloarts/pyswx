@@ -16,12 +16,8 @@ from pythoncom import VT_I4
 from win32com.client import VARIANT
 
 from pyswx.api.base_interface import BaseInterface
-from pyswx.api.sldworks.interfaces.i_advanced_save_as_options import (
-    IAdvancedSaveAsOptions,
-)
-from pyswx.api.sldworks.interfaces.i_custom_property_manager import (
-    ICustomPropertyManager,
-)
+from pyswx.api.sldworks.interfaces.i_advanced_save_as_options import IAdvancedSaveAsOptions
+from pyswx.api.sldworks.interfaces.i_custom_property_manager import ICustomPropertyManager
 from pyswx.api.sldworks.interfaces.i_export_pdf_data import IExportPdfData
 from pyswx.api.swconst.enumerations import SWFileSaveErrorE
 from pyswx.api.swconst.enumerations import SWFileSaveWarningE
@@ -48,9 +44,7 @@ class IModelDocExtension(BaseInterface):
         In the api definition this is a property, but in the python implementation it is a method, because python
         does not support properties with parameters. The parameter is the configuration name.
         """
-        return ICustomPropertyManager(
-            self.com_object.CustomPropertyManager(config_name)
-        )
+        return ICustomPropertyManager(self.com_object.CustomPropertyManager(config_name))
 
     def save_as_3(
         self,
@@ -80,11 +74,7 @@ class IModelDocExtension(BaseInterface):
         in_name = VARIANT(VT_BSTR, str(name))
         in_version = VARIANT(VT_I4, version.value)
         in_options = VARIANT(VT_I4, options.value) if options else VARIANT(VT_I4, 0)
-        in_export_data = (
-            VARIANT(VT_DISPATCH, export_data.com_object)
-            if export_data
-            else VARIANT(VT_DISPATCH, None)
-        )
+        in_export_data = VARIANT(VT_DISPATCH, export_data.com_object) if export_data else VARIANT(VT_DISPATCH, None)
         in_advanced_save_as_options = (
             VARIANT(VT_DISPATCH, advanced_save_as_options.com_object)
             if advanced_save_as_options
