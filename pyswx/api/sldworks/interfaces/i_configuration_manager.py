@@ -51,7 +51,7 @@ class IConfigurationManager(BaseInterface):
         Gets the active configuration of the document.
 
         Reference:
-        https://help.solidworks.com/2018/english/api/sldworksapi/SolidWorks.Interop.sldworks~SolidWorks.Interop.sldworks.IConfigurationManager~ActiveConfiguration.html
+        https://help.solidworks.com/2024/english/api/sldworksapi/SolidWorks.Interop.sldworks~SolidWorks.Interop.sldworks.IConfigurationManager~ActiveConfiguration.html
         """
         return IConfiguration(self.com_object.ActiveConfiguration)
 
@@ -206,9 +206,7 @@ class IConfigurationManager(BaseInterface):
         )
         return IConfiguration(com_object)
 
-    def add_rebuild_save_mark(
-        self, which_configuration: SWInConfigurationOptsE, config_names: List[str]
-    ) -> bool:
+    def add_rebuild_save_mark(self, which_configuration: SWInConfigurationOptsE, config_names: List[str]) -> bool:
         """
         Adds marks indicating whether the specified configurations need to be rebuilt and their configuration data saved every time the model document is saved.
 
@@ -218,9 +216,7 @@ class IConfigurationManager(BaseInterface):
         in_which_configuration = VARIANT(VT_I4, which_configuration.value)
         in_config_names = VARIANT(VT_BSTR | VT_ARRAY, [str(i) for i in config_names])
 
-        com_object = self.com_object.AddRebuildSaveMark(
-            in_which_configuration, in_config_names
-        )
+        com_object = self.com_object.AddRebuildSaveMark(in_which_configuration, in_config_names)
         return bool(com_object)
 
     def add_speed_pak2(self, type: int, part_threshold: float) -> IConfiguration:
@@ -236,23 +232,19 @@ class IConfigurationManager(BaseInterface):
         com_object = self.com_object.AddSpeedPak2(in_type, in_part_threshold)
         return IConfiguration(com_object)
 
-    def get_configuration_params(
-        self, config_name: str
-    ) -> Tuple[ParamsRetrieved, ParamNames, ParamValues]:
+    def get_configuration_params(self, config_name: str) -> Tuple[ParamsRetrieved, ParamNames, ParamValues]:
         """
         Gets the configuration parameters for the specified configuration.
 
         Reference:
-        https://help.solidworks.com/2018/english/api/sldworksapi/SolidWorks.Interop.sldworks~SolidWorks.Interop.sldworks.IConfigurationManager~GetConfigurationParams.html
+        https://help.solidworks.com/2024/english/api/sldworksapi/SolidWorks.Interop.sldworks~SolidWorks.Interop.sldworks.IConfigurationManager~GetConfigurationParams.html
         """
         in_config_name = VARIANT(VT_BSTR, config_name)
 
         out_params = VARIANT(VT_VARIANT | VT_BYREF, [])
         out_values = VARIANT(VT_VARIANT | VT_BYREF, [])
 
-        com_object = self.com_object.GetConfigurationParams(
-            in_config_name, out_params, out_values
-        )
+        com_object = self.com_object.GetConfigurationParams(in_config_name, out_params, out_values)
         return (
             bool(com_object),
             [str(name) for name in out_params.value],
@@ -281,9 +273,7 @@ class IConfigurationManager(BaseInterface):
         com_object = self.com_object.RemoveMarkForAllConfigurations
         return bool(com_object)
 
-    def set_configuration_params(
-        self, config_name: str, param_names: List[str], param_values: List[str]
-    ) -> bool:
+    def set_configuration_params(self, config_name: str, param_names: List[str], param_values: List[str]) -> bool:
         """
         Sets the parameters for this configuration.
 
@@ -294,9 +284,7 @@ class IConfigurationManager(BaseInterface):
         in_param_names = VARIANT(VT_BSTR | VT_ARRAY, [str(i) for i in param_names])
         in_param_values = VARIANT(VT_BSTR | VT_ARRAY, [str(i) for i in param_values])
 
-        com_object = self.com_object.SetConfigurationParams(
-            in_config_name, in_param_names, in_param_values
-        )
+        com_object = self.com_object.SetConfigurationParams(in_config_name, in_param_names, in_param_values)
         return bool(com_object)
 
     def set_expanded(self, which_pane: SWFeatMgrPaneE, expand: bool) -> None:

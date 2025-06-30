@@ -41,7 +41,7 @@ class IModelDoc2(BaseInterface):
         Gets the IConfigurationManager object, which allows access to a configuration in a model.
 
         Reference:
-        https://help.solidworks.com/2018/english/api/sldworksapi/solidworks.interop.sldworks~solidworks.interop.sldworks.imodeldoc2~configurationmanager.html
+        https://help.solidworks.com/2024/english/api/sldworksapi/solidworks.interop.sldworks~solidworks.interop.sldworks.imodeldoc2~configurationmanager.html
         """
         return IConfigurationManager(self.com_object.ConfigurationManager)
 
@@ -121,7 +121,7 @@ class IModelDoc2(BaseInterface):
         Gets the title of the document that appears in the active window's title bar.
 
         Reference:
-        https://help.solidworks.com/2018/english/api/sldworksapi/solidworks.interop.sldworks~solidworks.interop.sldworks.imodeldoc2~gettitle.html
+        https://help.solidworks.com/2024/english/api/sldworksapi/solidworks.interop.sldworks~solidworks.interop.sldworks.imodeldoc2~gettitle.html
         """
         com_object = self.com_object.GetTitle
         return str(com_object)

@@ -38,7 +38,7 @@ class IModelDocExtension(BaseInterface):
         Gets the custom property information for this configuration.
 
         Reference:
-        https://help.solidworks.com/2018/english/api/sldworksapi/SolidWorks.Interop.sldworks~SolidWorks.Interop.sldworks.IConfiguration~CustomPropertyManager.html
+        https://help.solidworks.com/2024/english/api/sldworksapi/SolidWorks.Interop.sldworks~SolidWorks.Interop.sldworks.IConfiguration~CustomPropertyManager.html
 
         Note:
         In the api definition this is a property, but in the python implementation it is a method, because python

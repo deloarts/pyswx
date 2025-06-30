@@ -2,16 +2,14 @@
 IConfiguration Interface Members
 
 Reference:
-https://help.solidworks.com/2018/english/api/sldworksapi/SOLIDWORKS.Interop.sldworks~SOLIDWORKS.Interop.sldworks.IConfiguration.html
+https://help.solidworks.com/2024/english/api/sldworksapi/SOLIDWORKS.Interop.sldworks~SOLIDWORKS.Interop.sldworks.IConfiguration.html
 
 Status: 🔴
 """
 
 from pyswx.api.base_interface import BaseInterface
 from pyswx.api.sldworks.interfaces.i_component_2 import IComponent2
-from pyswx.api.sldworks.interfaces.i_custom_property_manager import (
-    ICustomPropertyManager,
-)
+from pyswx.api.sldworks.interfaces.i_custom_property_manager import ICustomPropertyManager
 from pyswx.api.swconst.enumerations import SWChildComponentInBOMOptionE
 
 
@@ -43,7 +41,7 @@ class IConfiguration(BaseInterface):
         Gets the custom property information for this configuration.
 
         Reference:
-        https://help.solidworks.com/2018/english/api/sldworksapi/SolidWorks.Interop.sldworks~SolidWorks.Interop.sldworks.IConfiguration~CustomPropertyManager.html
+        https://help.solidworks.com/2024/english/api/sldworksapi/SolidWorks.Interop.sldworks~SolidWorks.Interop.sldworks.IConfiguration~CustomPropertyManager.html
         """
         return ICustomPropertyManager(self.com_object.CustomPropertyManager)
 
@@ -66,7 +64,7 @@ class IConfiguration(BaseInterface):
         Gets the root component for this assembly configuration.
 
         Reference:
-        https://help.solidworks.com/2018/english/api/sldworksapi/SolidWorks.Interop.sldworks~SolidWorks.Interop.sldworks.IConfiguration~GetRootComponent3.html
+        https://help.solidworks.com/2024/english/api/sldworksapi/SolidWorks.Interop.sldworks~SolidWorks.Interop.sldworks.IConfiguration~GetRootComponent3.html
         """
         com_object = self.com_object.GetRootComponent3(resolve)
         return IComponent2(com_object) if com_object else None

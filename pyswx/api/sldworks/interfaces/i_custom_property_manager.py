@@ -2,7 +2,7 @@
 ICustomPropertyManager Interface Members
 
 Reference:
-https://help.solidworks.com/2018/english/api/sldworksapi/SolidWorks.Interop.sldworks~SolidWorks.Interop.sldworks.ICustomPropertyManager_members.html
+https://help.solidworks.com/2024/english/api/sldworksapi/SolidWorks.Interop.sldworks~SolidWorks.Interop.sldworks.ICustomPropertyManager_members.html
 
 Status: 🔴
 """
@@ -53,7 +53,7 @@ class ICustomPropertyManager(BaseInterface):
         Gets the number of custom properties.
 
         Reference:
-        https://help.solidworks.com/2018/english/api/sldworksapi/SolidWorks.Interop.sldworks~SolidWorks.Interop.sldworks.ICustomPropertyManager~Count.html
+        https://help.solidworks.com/2024/english/api/sldworksapi/SolidWorks.Interop.sldworks~SolidWorks.Interop.sldworks.ICustomPropertyManager~Count.html
         """
         return int(self.com_object.Count)
 
@@ -63,7 +63,7 @@ class ICustomPropertyManager(BaseInterface):
         Gets or sets whether to link or unlink all custom properties to or from their parent part.
 
         Reference:
-        https://help.solidworks.com/2018/english/api/sldworksapi/SolidWorks.Interop.sldworks~SolidWorks.Interop.sldworks.ICustomPropertyManager~LinkAll.html
+        https://help.solidworks.com/2024/english/api/sldworksapi/SolidWorks.Interop.sldworks~SolidWorks.Interop.sldworks.ICustomPropertyManager~LinkAll.html
         """
         return bool(self.com_object.LinkAll)
 
@@ -77,7 +77,7 @@ class ICustomPropertyManager(BaseInterface):
                 Gets the owner of this custom property.
 
                 Reference:
-        https://help.solidworks.com/2018/english/api/sldworksapi/SolidWorks.Interop.sldworks~SolidWorks.Interop.sldworks.ICustomPropertyManager~Owner.html
+        https://help.solidworks.com/2024/english/api/sldworksapi/SolidWorks.Interop.sldworks~SolidWorks.Interop.sldworks.ICustomPropertyManager~Owner.html
         """
         return str(self.com_object.Owner)
 
@@ -92,12 +92,10 @@ class ICustomPropertyManager(BaseInterface):
         Adds a custom property to a configuration or model document.
 
         Reference:
-        https://help.solidworks.com/2018/english/api/sldworksapi/SolidWorks.Interop.sldworks~SolidWorks.Interop.sldworks.ICustomPropertyManager~Add3.html
+        https://help.solidworks.com/2024/english/api/sldworksapi/SolidWorks.Interop.sldworks~SolidWorks.Interop.sldworks.ICustomPropertyManager~Add3.html
         """
         return SWCustomInfoAddResultE(
-            self.com_object.Add3(
-                field_name, field_type.value, field_value, overwrite_existing.value
-            )
+            self.com_object.Add3(field_name, field_type.value, field_value, overwrite_existing.value)
         )
 
     def delete2(self, field_name: str) -> SWCustomInfoDeleteResultE:
@@ -105,7 +103,7 @@ class ICustomPropertyManager(BaseInterface):
         Deletes the specified custom property.
 
         Reference:
-        https://help.solidworks.com/2018/english/api/sldworksapi/SolidWorks.Interop.sldworks~SolidWorks.Interop.sldworks.ICustomPropertyManager~Delete2.html
+        https://help.solidworks.com/2024/english/api/sldworksapi/SolidWorks.Interop.sldworks~SolidWorks.Interop.sldworks.ICustomPropertyManager~Delete2.html
         """
         return SWCustomInfoDeleteResultE(self.com_object.Delete2(field_name))
 
@@ -124,7 +122,7 @@ class ICustomPropertyManager(BaseInterface):
         Gets the value and the evaluated value of the specified custom property.
 
         Reference:
-        https://help.solidworks.com/2018/english/api/sldworksapi/SolidWorks.Interop.sldworks~SolidWorks.Interop.sldworks.ICustomPropertyManager~Get6.html
+        https://help.solidworks.com/2024/english/api/sldworksapi/SolidWorks.Interop.sldworks~SolidWorks.Interop.sldworks.ICustomPropertyManager~Get6.html
         """
 
         in_field_name = VARIANT(VT_BSTR, field_name)
@@ -154,14 +152,12 @@ class ICustomPropertyManager(BaseInterface):
 
     def get_all3(
         self,
-    ) -> Tuple[
-        NumberOfProperties, PropNames, PropTypes, PropValues, Resolved, PropLink
-    ]:
+    ) -> Tuple[NumberOfProperties, PropNames, PropTypes, PropValues, Resolved, PropLink]:
         """
         Gets all of the custom properties for this configuration.
 
         Reference:
-        https://help.solidworks.com/2018/english/api/sldworksapi/SolidWorks.Interop.sldworks~SolidWorks.Interop.sldworks.ICustomPropertyManager~GetAll3.html
+        https://help.solidworks.com/2024/english/api/sldworksapi/SolidWorks.Interop.sldworks~SolidWorks.Interop.sldworks.ICustomPropertyManager~GetAll3.html
         """
         out_prop_names = VARIANT(VT_VARIANT | VT_BYREF, [])
         out_prop_types = VARIANT(VT_VARIANT | VT_BYREF, [])
@@ -191,7 +187,7 @@ class ICustomPropertyManager(BaseInterface):
         Gets the names of the custom properties.
 
         Reference:
-        https://help.solidworks.com/2018/english/api/sldworksapi/SolidWorks.Interop.sldworks~SolidWorks.Interop.sldworks.ICustomPropertyManager~GetNames.html
+        https://help.solidworks.com/2024/english/api/sldworksapi/SolidWorks.Interop.sldworks~SolidWorks.Interop.sldworks.ICustomPropertyManager~GetNames.html
         """
         com_object = self.com_object.GetNames
         return [str(i) for i in com_object] if com_object else []
@@ -201,28 +197,24 @@ class ICustomPropertyManager(BaseInterface):
         Gets the type of the specified custom property for a configuration or model document.
 
         Reference:
-        https://help.solidworks.com/2018/english/api/sldworksapi/SolidWorks.Interop.sldworks~SolidWorks.Interop.sldworks.ICustomPropertyManager~GetType2.html
+        https://help.solidworks.com/2024/english/api/sldworksapi/SolidWorks.Interop.sldworks~SolidWorks.Interop.sldworks.ICustomPropertyManager~GetType2.html
         """
         return SWCustomInfoTypeE(self.com_object.GetType2(field_name))
 
-    def link_property(
-        self, field_name: str, field_link: bool
-    ) -> SWCustomLinkSetResultE:
+    def link_property(self, field_name: str, field_link: bool) -> SWCustomLinkSetResultE:
         """
         Sets whether to link or unlink the specified custom property to or from its parent part.
 
         Reference:
-        https://help.solidworks.com/2018/english/api/sldworksapi/SolidWorks.Interop.sldworks~SolidWorks.Interop.sldworks.ICustomPropertyManager~LinkProperty.html
+        https://help.solidworks.com/2024/english/api/sldworksapi/SolidWorks.Interop.sldworks~SolidWorks.Interop.sldworks.ICustomPropertyManager~LinkProperty.html
         """
-        return SWCustomLinkSetResultE(
-            self.com_object.LinkProperty(field_name, field_link)
-        )
+        return SWCustomLinkSetResultE(self.com_object.LinkProperty(field_name, field_link))
 
     def set2(self, field_name: str, field_value: str) -> SWCustomInfoSetResultE:
         """
         Sets the value of the specified custom property.
 
         Reference:
-        https://help.solidworks.com/2018/english/api/sldworksapi/SolidWorks.Interop.sldworks~SolidWorks.Interop.sldworks.ICustomPropertyManager~Set2.html
+        https://help.solidworks.com/2024/english/api/sldworksapi/SolidWorks.Interop.sldworks~SolidWorks.Interop.sldworks.ICustomPropertyManager~Set2.html
         """
         return SWCustomInfoSetResultE(self.com_object.Set2(field_name, field_value))
