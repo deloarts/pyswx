@@ -9,6 +9,7 @@ Status: 🔴
 
 from pathlib import Path
 
+from pythoncom import VT_BOOL
 from pythoncom import VT_BSTR
 from pythoncom import VT_BYREF
 from pythoncom import VT_DISPATCH
@@ -44,7 +45,8 @@ class IModelDocExtension(BaseInterface):
         In the api definition this is a property, but in the python implementation it is a method, because python
         does not support properties with parameters. The parameter is the configuration name.
         """
-        return ICustomPropertyManager(self.com_object.CustomPropertyManager(config_name))
+        in_config_name = VARIANT(VT_BOOL, bool(config_name))
+        return ICustomPropertyManager(self.com_object.CustomPropertyManager(in_config_name))
 
     def save_as_3(
         self,
