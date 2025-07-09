@@ -4,7 +4,7 @@ ICustomPropertyManager Interface Members
 Reference:
 https://help.solidworks.com/2024/english/api/sldworksapi/SolidWorks.Interop.sldworks~SolidWorks.Interop.sldworks.ICustomPropertyManager_members.html
 
-Status: 🔴
+Status: 🟢
 """
 
 from typing import List
@@ -32,6 +32,7 @@ type WasResolvedOut = bool
 type LinkToPropertyOut = bool
 
 type NumberOfProperties = int
+type Count = int
 type PropNames = List[str]
 type PropTypes = List[SWCustomInfoTypeE]
 type PropValues = List[str]
@@ -108,16 +109,8 @@ class ICustomPropertyManager(BaseInterface):
         return SWCustomInfoDeleteResultE(self.com_object.Delete2(field_name))
 
     def get6(
-        self,
-        field_name: str,
-        use_cached: bool,
-    ) -> Tuple[
-        SWCustomInfoGetResultE,
-        ValueOut,
-        ResolvedValueOut,
-        WasResolvedOut,
-        LinkToPropertyOut,
-    ]:
+        self, field_name: str, use_cached: bool
+    ) -> Tuple[SWCustomInfoGetResultE, ValueOut, ResolvedValueOut, WasResolvedOut, LinkToPropertyOut]:
         """
         Gets the value and the evaluated value of the specified custom property.
 
@@ -150,9 +143,7 @@ class ICustomPropertyManager(BaseInterface):
             bool(out_link_to_property.value),
         )
 
-    def get_all3(
-        self,
-    ) -> Tuple[NumberOfProperties, PropNames, PropTypes, PropValues, Resolved, PropLink]:
+    def get_all3(self) -> Tuple[NumberOfProperties, PropNames, PropTypes, PropValues, Resolved, PropLink]:
         """
         Gets all of the custom properties for this configuration.
 
@@ -200,6 +191,57 @@ class ICustomPropertyManager(BaseInterface):
         https://help.solidworks.com/2024/english/api/sldworksapi/SolidWorks.Interop.sldworks~SolidWorks.Interop.sldworks.ICustomPropertyManager~GetType2.html
         """
         return SWCustomInfoTypeE(self.com_object.GetType2(field_name))
+
+    def i_get_all(self) -> Tuple[Count, PropNames, PropTypes, PropValues]:
+        """
+        Gets all of the custom properties for this configuration.
+
+        Reference:
+        https://help.solidworks.com/2024/english/api/sldworksapi/SolidWorks.Interop.sldworks~SolidWorks.Interop.sldworks.ICustomPropertyManager~IGetAll.html
+        """
+
+        out_count = VARIANT(VT_BYREF | VT_I4, None)
+        out_prop_names = VARIANT(VT_VARIANT | VT_BYREF, [])
+        out_prop_types = VARIANT(VT_VARIANT | VT_BYREF, [])
+        out_prop_values = VARIANT(VT_VARIANT | VT_BYREF, [])
+
+        com_object = self.com_object.IGetAll(out_count, out_prop_names, out_prop_types, out_prop_values)
+
+        return (
+            int(out_count.value),
+            [str(i) for i in out_prop_names.value],
+            [SWCustomInfoTypeE(i) for i in out_prop_types.value],
+            [str(i) for i in out_prop_values.value],
+        )
+
+    def i_get_names(self) -> Count:
+        """
+        Gets the names of the custom properties.
+
+        Reference:
+        https://help.solidworks.com/2024/english/api/sldworksapi/SolidWorks.Interop.sldworks~SolidWorks.Interop.sldworks.ICustomPropertyManager~IGetNames.html
+        """
+
+        out_count = VARIANT(VT_BYREF | VT_I4, None)
+
+        com_object = self.com_object.IGetNames(out_count)
+
+        return int(out_count.value)
+
+    def is_custom_property_editable(self, property_name: str, configuration_name: str) -> bool:
+        """
+        Gets whether the specified custom property is editable in the specified configuration.
+
+        Reference:
+        https://help.solidworks.com/2024/english/api/sldworksapi/SolidWorks.Interop.sldworks~SolidWorks.Interop.sldworks.ICustomPropertyManager~IsCustomPropertyEditable.html
+        """
+
+        in_property_name = VARIANT(VT_BSTR, property_name)
+        in_configuration_name = VARIANT(VT_BSTR, configuration_name)
+
+        com_object = self.com_object.IsCustomPropertyEditable(in_property_name, in_configuration_name)
+
+        return bool(com_object)
 
     def link_property(self, field_name: str, field_link: bool) -> SWCustomLinkSetResultE:
         """
