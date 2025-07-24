@@ -9,7 +9,6 @@ Status: 🔴
 
 from pathlib import Path
 
-from pythoncom import VT_BOOL
 from pythoncom import VT_BSTR
 from pythoncom import VT_BYREF
 from pythoncom import VT_DISPATCH
