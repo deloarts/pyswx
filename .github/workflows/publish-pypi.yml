@@ -32,6 +32,10 @@ jobs:
       - name: Install dependencies
         run: C:\Users\runneradmin\AppData\Roaming\Python\Scripts\poetry install --sync --no-interaction
 
+      - name: Clean dist folder
+        run: |
+          if exist dist rmdir /s /q dist
+
       - name: Build project
         run: C:\Users\runneradmin\AppData\Roaming\Python\Scripts\poetry build
 
