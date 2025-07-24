@@ -290,6 +290,7 @@ indicator | status | description
 
 ## 5 changelog
 
+[**v0.3.1**](https://github.com/deloarts/pyswx/releases/tag/v0.3.1): Fix type mismatch in `custom_property_manager`.  
 [**v0.3.0**](https://github.com/deloarts/pyswx/releases/tag/v0.3.0): Complete ICustomPropertyManager interface.  
 [**v0.2.0**](https://github.com/deloarts/pyswx/releases/tag/v0.2.0): Complete IFrame interface and add swconst enum interfaces.  
 [**v0.1.1**](https://github.com/deloarts/pyswx/releases/tag/v0.1.1): Enhance IModelDoc2 and ISldWorks interfaces with new methods and clean up imports.  
