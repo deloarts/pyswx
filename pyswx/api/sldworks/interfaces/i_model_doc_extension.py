@@ -45,7 +45,7 @@ class IModelDocExtension(BaseInterface):
         In the api definition this is a property, but in the python implementation it is a method, because python
         does not support properties with parameters. The parameter is the configuration name.
         """
-        in_config_name = VARIANT(VT_BOOL, bool(config_name))
+        in_config_name = VARIANT(VT_BSTR, config_name)
         return ICustomPropertyManager(self.com_object.CustomPropertyManager(in_config_name))
 
     def save_as_3(
