@@ -890,17 +890,29 @@ class ISldWorks(BaseInterface):
         com_object = self.com_object.GetOpenDocSpec(str(file_name))
         return IDocumentSpecification(com_object)
 
-    def get_open_document(self):
+    def get_open_document(self, doc_name: str) -> IModelDoc2 | None:
         """
         Gets the open document with the specified name.
-        """
-        raise NotImplementedError
 
-    def get_open_document_by_name(self):
+        Reference:
+        https://help.solidworks.com/2024/english/api/sldworksapi/solidworks.interop.sldworks~solidworks.interop.sldworks.isldworks~getopendocument.html
+        """
+        in_doc_name = VARIANT(VT_BSTR, doc_name)
+        com_object = self.com_object.GetOpenDocument(in_doc_name)
+        if com_object:
+            return IModelDoc2(com_object)
+
+    def get_open_document_by_name(self, document_name: str) -> IModelDoc2 | None:
         """
         Gets the open document by the specified name.
+
+        Reference:
+        https://help.solidworks.com/2024/english/api/sldworksapi/solidworks.interop.sldworks~solidworks.interop.sldworks.isldworks~getopendocumentbyname.html
         """
-        raise NotImplementedError
+        in_document_name = VARIANT(VT_BSTR, document_name)
+        com_object = self.com_object.GetOpenDocumentByName(in_document_name)
+        if com_object:
+            return IModelDoc2(com_object)
 
     def get_opened_file_info(self):
         """
