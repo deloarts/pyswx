@@ -1387,8 +1387,8 @@ class ISldWorks(BaseInterface):
 
         if out_errors.value != 0:
             out_errors = SWFileLoadErrorE(value=out_errors.value)
-            self.logger.error(out_errors)
-            raise Exception(out_errors)
+            self.logger.error(out_errors.name)
+            raise Exception(out_errors.name)
 
         return IModelDoc2(com_object)
 
