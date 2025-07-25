@@ -8,14 +8,20 @@ Status: 🔴
 """
 
 from pythoncom import VT_BOOL
+from pythoncom import VT_BSTR
+from pythoncom import VT_BYREF
+from pythoncom import VT_I4
+from pythoncom import VT_R8
 from win32com.client import VARIANT
 
 from pyswx.api.base_interface import BaseInterface
 from pyswx.api.sldworks.interfaces.i_component_2 import IComponent2
 from pyswx.api.sldworks.interfaces.i_custom_property_manager import ICustomPropertyManager
 from pyswx.api.sldworks.interfaces.i_dim_xpert_manager import IDimXpertManager
+from pyswx.api.sldworks.interfaces.i_explode_step import IExplodeStep
 from pyswx.api.swconst.enumerations import SWChildComponentInBOMOptionE
 from pyswx.api.swconst.enumerations import SWConfigurationTypeE
+from pyswx.api.swconst.enumerations import SWCreateExplodeStepErrorE
 
 
 class IConfiguration(BaseInterface):
@@ -287,6 +293,52 @@ class IConfiguration(BaseInterface):
     @use_description_in_bom.setter
     def use_description_in_bom(self, value: bool) -> None:
         self.com_object.UseDescriptionInBOM = value
+
+    def add_explode_step_2(
+        self,
+        expl_dist: float,
+        expl_dir_index: int,
+        reverse_dir: bool,
+        expl_ang: float,
+        rot_axis_index: int,
+        reverse_ang: bool,
+        rotate_about_origin: bool,
+        auto_space_components_on_drag: bool,
+    ) -> IExplodeStep:
+        """
+        Adds a regular (translate and rotate) explode step to the explode view of the active configuration.
+
+        Reference:
+        https://help.solidworks.com/2024/english/api/sldworksapi/SolidWorks.Interop.sldworks~SolidWorks.Interop.sldworks.IConfiguration~AddExplodeStep2.html
+        """
+        in_expl_dist = VARIANT(VT_R8, expl_dist)
+        in_expl_dir_index = VARIANT(VT_I4, expl_dir_index)
+        in_reverse_dir = VARIANT(VT_BOOL, reverse_dir)
+        in_expl_ang = VARIANT(VT_R8, expl_ang)
+        in_rot_axis_index = VARIANT(VT_I4, rot_axis_index)
+        in_reverse_ang = VARIANT(VT_BOOL, reverse_ang)
+        in_rotate_about_origin = VARIANT(VT_BOOL, rotate_about_origin)
+        in_auto_space_components_on_drag = VARIANT(VT_BOOL, auto_space_components_on_drag)
+
+        out_errors = VARIANT(VT_BYREF | VT_I4, None)
+
+        com_object = self.com_object.AddExplodeStep2(
+            in_expl_dist,
+            in_expl_dir_index,
+            in_reverse_dir,
+            in_expl_ang,
+            in_rot_axis_index,
+            in_reverse_ang,
+            in_rotate_about_origin,
+            in_auto_space_components_on_drag,
+            out_errors,
+        )
+        if out_errors.value != 0:
+            out_errors = SWCreateExplodeStepErrorE(value=out_errors.value)
+            self.logger.error(out_errors.name)
+            raise Exception(out_errors.name)
+
+        return IExplodeStep(com_object)
 
     def get_root_component3(self, resolve: bool) -> IComponent2 | None:
         """

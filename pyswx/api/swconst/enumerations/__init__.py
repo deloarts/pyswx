@@ -46,3 +46,5 @@ from pyswx.api.swconst.enumerations.sw_save_items_path_error_e import SWSaveItem
 from pyswx.api.swconst.enumerations.sw_select_type_e import SWSelectTypeE
 from pyswx.api.swconst.enumerations.sw_task_pane_tab_e import SWTaskPaneTabE
 from pyswx.api.swconst.enumerations.sw_body_type_e import SWBodyTypeE
+
+from pyswx.api.swconst.enumerations.sw_create_explode_step_error_e import SWCreateExplodeStepErrorE
