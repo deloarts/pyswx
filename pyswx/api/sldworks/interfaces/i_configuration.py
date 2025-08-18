@@ -22,6 +22,7 @@ from pyswx.api.sldworks.interfaces.i_explode_step import IExplodeStep
 from pyswx.api.swconst.enumerations import SWChildComponentInBOMOptionE
 from pyswx.api.swconst.enumerations import SWConfigurationTypeE
 from pyswx.api.swconst.enumerations import SWCreateExplodeStepErrorE
+from pyswx.exceptions import DocumentError
 
 
 class IConfiguration(BaseInterface):
@@ -310,6 +311,9 @@ class IConfiguration(BaseInterface):
 
         Reference:
         https://help.solidworks.com/2024/english/api/sldworksapi/SolidWorks.Interop.sldworks~SolidWorks.Interop.sldworks.IConfiguration~AddExplodeStep2.html
+
+        Raises:
+            DocumentError: Raised if there is an error.
         """
         in_expl_dist = VARIANT(VT_R8, expl_dist)
         in_expl_dir_index = VARIANT(VT_I4, expl_dir_index)
@@ -335,8 +339,7 @@ class IConfiguration(BaseInterface):
         )
         if out_errors.value != 0:
             out_errors = SWCreateExplodeStepErrorE(value=out_errors.value)
-            self.logger.error(out_errors.name)
-            raise Exception(out_errors.name)
+            raise DocumentError(str(out_errors))
 
         return IExplodeStep(com_object)
 

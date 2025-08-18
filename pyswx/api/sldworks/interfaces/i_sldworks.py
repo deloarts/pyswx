@@ -34,6 +34,7 @@ from pyswx.api.swconst.enumerations import SWFileLoadErrorE
 from pyswx.api.swconst.enumerations import SWFileLoadWarningE
 from pyswx.api.swconst.enumerations import SWOpenDocOptionsE
 from pyswx.api.swconst.enumerations import SWRebuildOnActivationOptionsE
+from pyswx.exceptions import DocumentError
 
 
 class ISldWorks(BaseInterface):
@@ -219,6 +220,9 @@ class ISldWorks(BaseInterface):
 
         Reference:
         https://help.solidworks.com/2024/english/api/sldworksapi/solidworks.interop.sldworks~solidworks.interop.sldworks.isldworks~activatedoc3.html
+
+        Raises:
+            DocumentError: Raised if there is an error activating the document.
         """
 
         in_name = VARIANT(VT_BSTR, str(name))
@@ -236,8 +240,7 @@ class ISldWorks(BaseInterface):
 
         if out_errors.value != 0:
             out_errors = SWDocActivateErrorE(value=out_errors.value)
-            self.logger.error(out_errors)
-            raise Exception(out_errors)
+            raise DocumentError(str(out_errors))
 
         return IModelDoc2(model_doc)
 
@@ -373,7 +376,7 @@ class ISldWorks(BaseInterface):
         https://help.solidworks.com/2024/english/api/sldworksapi/SolidWorks.Interop.sldworks~SolidWorks.Interop.sldworks.ISldWorks~CloseAndReopen.html
         """
         if doc.get_type() != SWDocumentTypesE.SW_DOC_DRAWING:
-            raise Exception("Document is not a drawing")
+            raise DocumentError("Document is not a drawing")
 
         in_doc = VARIANT(VT_DISPATCH, doc.com_object)
         in_option = VARIANT(VT_I4, option.value)
@@ -393,7 +396,7 @@ class ISldWorks(BaseInterface):
         https://help.solidworks.com/2024/english/api/sldworksapi/SolidWorks.Interop.sldworks~SolidWorks.Interop.sldworks.ISldWorks~CloseAndReopen2.html
         """
         if doc.get_type() != SWDocumentTypesE.SW_DOC_DRAWING:
-            raise Exception("Document is not a drawing")
+            raise DocumentError("Document is not a drawing")
 
         in_doc = VARIANT(VT_DISPATCH, doc.com_object)
         in_option = VARIANT(VT_I4, option.value)
@@ -1387,8 +1390,7 @@ class ISldWorks(BaseInterface):
 
         if out_errors.value != 0:
             out_errors = SWFileLoadErrorE(value=out_errors.value)
-            self.logger.error(out_errors.name)
-            raise Exception(out_errors.name)
+            raise DocumentError(out_errors.name)
 
         return IModelDoc2(com_object)
 
@@ -1414,8 +1416,7 @@ class ISldWorks(BaseInterface):
 
         if in_specification.value.Error != 0:
             out_errors = SWFileLoadErrorE(value=in_specification.value.Error)
-            self.logger.error(out_errors.name)
-            raise Exception(out_errors.name)
+            raise DocumentError(str(out_errors))
 
         return IModelDoc2(com_object) if com_object else None
 

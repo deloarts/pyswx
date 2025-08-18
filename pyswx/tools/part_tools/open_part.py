@@ -5,14 +5,13 @@ PART TOOLS // OPEN PART
 from pathlib import Path
 from typing import Tuple
 
-from pyswx.api.sldworks.interfaces.i_document_specification import (
-    IDocumentSpecification,
-)
+from pyswx.api.sldworks.interfaces.i_document_specification import IDocumentSpecification
 from pyswx.api.sldworks.interfaces.i_model_doc_2 import IModelDoc2
 from pyswx.api.sldworks.interfaces.i_part_doc import IPartDoc
 from pyswx.api.sldworks.interfaces.i_sldworks import ISldWorks
 from pyswx.api.swconst.enumerations import SWDocumentTypesE
 from pyswx.api.swconst.enumerations import SWRebuildOnActivationOptionsE
+from pyswx.exceptions import DocumentError
 
 
 def open_part(
@@ -40,7 +39,7 @@ def open_part(
         - ignore_hidden_components: True
 
     Raises:
-        Exception: Raised if there is an error opening the document.
+        DocumentError: Raised if there is an error opening the document.
         ValueError: Raised if no active document is found.
         ValueError: Raised if the active document is not a part.
     """
@@ -57,7 +56,7 @@ def open_part(
 
     if part_open_spec.error is not None:
         swx.logger.error(part_open_spec.error.name)
-        raise Exception(part_open_spec.error.name)
+        raise DocumentError(part_open_spec.error.name)
 
     if part_model is None:
         raise ValueError("No active document found")

@@ -25,6 +25,7 @@ from pyswx.api.swconst.enumerations import SWDocumentTypesE
 from pyswx.api.swconst.enumerations import SWFileSaveErrorE
 from pyswx.api.swconst.enumerations import SWFileSaveWarningE
 from pyswx.api.swconst.enumerations import SWSaveAsOptionsE
+from pyswx.exceptions import DocumentError
 
 
 class IModelDoc2(BaseInterface):
@@ -141,6 +142,9 @@ class IModelDoc2(BaseInterface):
 
         Reference:
         https://help.solidworks.com/2024/english/api/sldworksapi/SolidWorks.Interop.sldworks~SolidWorks.Interop.sldworks.IModelDoc2~Save3.html
+
+        Raises:
+            DocumentError: Raised if there is an error saving the document.
         """
         in_options = VARIANT(VT_I4, options.value) if options else VARIANT(VT_I4, 0)
 
@@ -155,8 +159,7 @@ class IModelDoc2(BaseInterface):
 
         if out_errors.value != 0:
             out_errors = SWFileSaveErrorE(value=out_errors.value)
-            self.logger.error(out_errors)
-            raise Exception(out_errors)
+            raise DocumentError(str(out_errors))
 
         return com_object
 

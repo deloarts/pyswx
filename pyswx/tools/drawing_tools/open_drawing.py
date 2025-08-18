@@ -13,6 +13,7 @@ from pyswx.api.sldworks.interfaces.i_model_doc_2 import IModelDoc2
 from pyswx.api.sldworks.interfaces.i_sldworks import ISldWorks
 from pyswx.api.swconst.enumerations import SWDocumentTypesE
 from pyswx.api.swconst.enumerations import SWRebuildOnActivationOptionsE
+from pyswx.exceptions import DocumentError
 
 
 def open_drawing(
@@ -40,7 +41,7 @@ def open_drawing(
         - ignore_hidden_components: True
 
     Raises:
-        Exception: Raised if there is an error opening the document.
+        DocumentError: Raised if there is an error opening the document.
         ValueError: Raised if no active document is found.
         ValueError: Raised if the active document is not a drawing.
     """
@@ -50,16 +51,14 @@ def open_drawing(
     drawing_open_spec.light_weight = True
     drawing_open_spec.silent = True
     drawing_open_spec.ignore_hidden_components = True
-    drawing_model = swx.open_doc7(
-        specification=document_specification or drawing_open_spec
-    )
+    drawing_model = swx.open_doc7(specification=document_specification or drawing_open_spec)
 
     if drawing_open_spec.warning is not None:
         swx.logger.warning(drawing_open_spec.warning.name)
 
     if drawing_open_spec.error is not None:
         swx.logger.error(drawing_open_spec.error.name)
-        raise Exception(drawing_open_spec.error.name)
+        raise DocumentError(drawing_open_spec.error.name)
 
     if drawing_model is None:
         raise ValueError("No active document found")
