@@ -19,4 +19,4 @@ def test_pyswx():
 
     assert swx.visible  # This is set in conftest.py
     assert swx.startup_process_completed
-    assert swx.user_control == False
+    assert swx.user_control == True

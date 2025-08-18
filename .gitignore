@@ -8,6 +8,7 @@
 .backup/
 hidden_assets/
 mypy_report
+tests/objects
 docs/build
 docs/source/_build
 tools/*.txt
