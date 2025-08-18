@@ -32,6 +32,9 @@ from pyswx.api.swconst.enumerations import SWDocumentTypesE
 from pyswx.api.swconst.enumerations import SWExportDataFileType_e
 from pyswx.api.swconst.enumerations import SWFileLoadErrorE
 from pyswx.api.swconst.enumerations import SWFileLoadWarningE
+from pyswx.api.swconst.enumerations import SWMessageBoxBtnE
+from pyswx.api.swconst.enumerations import SWMessageBoxIconE
+from pyswx.api.swconst.enumerations import SWMessageBoxResultE
 from pyswx.api.swconst.enumerations import SWOpenDocOptionsE
 from pyswx.api.swconst.enumerations import SWRebuildOnActivationOptionsE
 from pyswx.exceptions import DocumentError
@@ -1639,11 +1642,19 @@ class ISldWorks(BaseInterface):
         """
         raise NotImplementedError
 
-    def send_msg_to_user2(self):
+    def send_msg_to_user2(self, message: str, icon: SWMessageBoxIconE, buttons: SWMessageBoxBtnE):
         """
         Displays a message box that requires user interaction before continuing.
+
+        Reference:
+        https://help.solidworks.com/2024/english/api/sldworksapi/SOLIDWORKS.Interop.sldworks~SOLIDWORKS.Interop.sldworks.ISldWorks~SendMsgToUser2.html
         """
-        raise NotImplementedError
+        in_message = VARIANT(VT_BSTR, message)
+        in_icon = VARIANT(VT_I4, icon.value)
+        in_button = VARIANT(VT_I4, buttons.value)
+
+        com_object = self.com_object.SendMsgToUser2(in_message, in_icon, in_button)
+        return SWMessageBoxResultE(com_object)
 
     def set_addin_callback_info2(self):
         """
