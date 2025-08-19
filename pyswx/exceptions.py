@@ -21,3 +21,6 @@ class BaseError(Exception):
 
 
 class DocumentError(BaseError): ...
+
+
+class ArgumentError(BaseError): ...
