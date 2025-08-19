@@ -17,6 +17,7 @@ TEST_PART_01 = Path(TEST_OBJECTS, "test_01.sldprt")
 TEST_PART_01_EXPORT_STEP = Path(TEST_OBJECTS, "test_01.step")
 TEST_PART_02 = Path(TEST_OBJECTS, "test_02.sldprt")
 TEST_DRAWING_01 = Path(TEST_OBJECTS, "test_01.slddrw")
+TEST_DRAWING_01_EXPORT_PDF = Path(TEST_OBJECTS, "test_01.pdf")
 
 
 def pytest_sessionstart():
@@ -26,7 +27,7 @@ def pytest_sessionstart():
 
     swx = PySWX().application
     swx.visible = True
-    swx.user_control = False
+    swx.user_control = True
 
     doc_count = swx.get_document_count()
 
@@ -50,6 +51,8 @@ def pytest_sessionstart():
     # Remove generic files
     if os.path.exists(TEST_PART_01_EXPORT_STEP):
         os.remove(TEST_PART_01_EXPORT_STEP)
+    if os.path.exists(TEST_DRAWING_01_EXPORT_PDF):
+        os.remove(TEST_DRAWING_01_EXPORT_PDF)
 
 
 def pytest_sessionfinish():
@@ -57,3 +60,5 @@ def pytest_sessionfinish():
 
     swx = PySWX().application
     swx.user_control = True
+
+    swx.close_all_documents(include_unsaved=True)
