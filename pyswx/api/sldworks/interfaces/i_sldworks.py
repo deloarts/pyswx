@@ -17,6 +17,7 @@ from pythoncom import VT_BSTR
 from pythoncom import VT_BYREF
 from pythoncom import VT_DISPATCH
 from pythoncom import VT_I4
+from pythoncom import VT_R8
 from win32com.client import VARIANT
 
 from pyswx.api.base_interface import BaseInterface
@@ -29,6 +30,7 @@ from pyswx.api.swconst.enumerations import SWCloseReopenErrorE
 from pyswx.api.swconst.enumerations import SWCloseReopenOptionE
 from pyswx.api.swconst.enumerations import SWDocActivateErrorE
 from pyswx.api.swconst.enumerations import SWDocumentTypesE
+from pyswx.api.swconst.enumerations import SWDwgPaperSizesE
 from pyswx.api.swconst.enumerations import SWExportDataFileType_e
 from pyswx.api.swconst.enumerations import SWFileLoadErrorE
 from pyswx.api.swconst.enumerations import SWFileLoadWarningE
@@ -37,6 +39,8 @@ from pyswx.api.swconst.enumerations import SWMessageBoxIconE
 from pyswx.api.swconst.enumerations import SWMessageBoxResultE
 from pyswx.api.swconst.enumerations import SWOpenDocOptionsE
 from pyswx.api.swconst.enumerations import SWRebuildOnActivationOptionsE
+from pyswx.api.swconst.enumerations import SWUserPreferenceStringValueE
+from pyswx.exceptions import ArgumentError
 from pyswx.exceptions import DocumentError
 
 
@@ -228,7 +232,7 @@ class ISldWorks(BaseInterface):
             DocumentError: Raised if there is an error activating the document.
         """
 
-        in_name = VARIANT(VT_BSTR, str(name))
+        in_name = VARIANT(VT_BSTR, name.name)
         in_use_user_preferences = VARIANT(VT_BOOL, use_user_preferences)
         in_option = VARIANT(VT_I4, option)
 
@@ -1052,11 +1056,17 @@ class ISldWorks(BaseInterface):
         """
         raise NotImplementedError
 
-    def get_user_preference_string_value(self):
+    def get_user_preference_string_value(self, user_preference: SWUserPreferenceStringValueE) -> str:
         """
         Gets system default user preference values of type string.
+
+        Reference:
+        https://help.solidworks.com/2024/english/api/sldworksapi/solidworks.interop.sldworks~solidworks.interop.sldworks.isldworks~getuserpreferencestringvalue.html
         """
-        raise NotImplementedError
+        in_user_preference = VARIANT(VT_I4, user_preference.value)
+
+        com_object = self.com_object.GetUserPreferenceStringValue(in_user_preference)
+        return str(com_object)
 
     def get_user_preference_toggle(self):
         """
@@ -1347,11 +1357,27 @@ class ISldWorks(BaseInterface):
         """
         raise NotImplementedError
 
-    def new_document(self):
+    def new_document(
+        self, template_name: Path, paper_size: SWDwgPaperSizesE, width: float | None = None, height: float | None = None
+    ) -> IModelDoc2 | None:
         """
         Creates a new document based on the specified template.
+
+        Reference:
+        https://help.solidworks.com/2022/english/api/sldworksapi/solidworks.interop.sldworks~solidworks.interop.sldworks.isldworks~newdocument.html
         """
-        raise NotImplementedError
+        if paper_size == SWDwgPaperSizesE.SW_DWG_PAPERS_USER_DEFINED and not width and not height:
+            raise ArgumentError(
+                "Argument width and height must not be None when paper_size is 'SW_DWG_PAPERS_USER_DEFINED'"
+            )
+
+        in_template_name = VARIANT(VT_BSTR, str(template_name))
+        in_paper_size = VARIANT(VT_I4, paper_size.value)
+        in_width = VARIANT(VT_R8, width or 0)
+        in_height = VARIANT(VT_R8, height or 0)
+
+        com_object = self.com_object.NewDocument(in_template_name, in_paper_size, in_width, in_height)
+        return IModelDoc2(com_object) if com_object else None
 
     def open_doc6(
         self,
