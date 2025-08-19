@@ -31,6 +31,7 @@ from pyswx.api.swconst.enumerations.sw_custom_info_type_e import SWCustomInfoTyp
 from pyswx.api.swconst.enumerations.sw_custom_link_set_result_e import SWCustomLinkSetResultE
 from pyswx.api.swconst.enumerations.sw_custom_property_add_option_e import SWCustomPropertyAddOptionE
 from pyswx.api.swconst.enumerations.sw_document_types_e import SWDocumentTypesE
+from pyswx.api.swconst.enumerations.sw_dwg_paper_sizes_e import SWDwgPaperSizesE
 from pyswx.api.swconst.enumerations.sw_export_data_file_type_e import SWExportDataFileType_e
 from pyswx.api.swconst.enumerations.sw_export_data_sheets_to_export_e import SWExportDataSheetsToExportE
 from pyswx.api.swconst.enumerations.sw_feat_mgr_pane_e import SWFeatMgrPaneE
@@ -50,3 +51,4 @@ from pyswx.api.swconst.enumerations.sw_save_as_version_e import SWSaveAsVersionE
 from pyswx.api.swconst.enumerations.sw_save_items_path_error_e import SWSaveItemsPathErrorE
 from pyswx.api.swconst.enumerations.sw_select_type_e import SWSelectTypeE
 from pyswx.api.swconst.enumerations.sw_task_pane_tab_e import SWTaskPaneTabE
+from pyswx.api.swconst.enumerations.sw_user_preference_string_value_e import SWUserPreferenceStringValueE
