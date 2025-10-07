@@ -5,6 +5,8 @@ Defines message box icons used in SolidWorks.
 
 Reference:
 https://help.solidworks.com/2024/english/api/swconst/SOLIDWORKS.Interop.swconst~SOLIDWORKS.Interop.swconst.swMessageBoxIcon_e.html
+
+Status: 🟢
 """
 
 from enum import IntEnum

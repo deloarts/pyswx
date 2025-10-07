@@ -5,6 +5,8 @@ Defines the control button sets available for SolidWorks message boxes.
 
 Reference:
 https://help.solidworks.com/2024/english/api/swconst/SOLIDWORKS.Interop.swconst~SOLIDWORKS.Interop.swconst.swMessageBoxBtn_e.html
+
+Status: 🟢
 """
 
 from enum import IntEnum

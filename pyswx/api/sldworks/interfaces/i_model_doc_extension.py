@@ -8,6 +8,7 @@ Status: 🔴
 """
 
 from pathlib import Path
+from typing import Tuple
 
 from pythoncom import VT_BSTR
 from pythoncom import VT_BYREF
@@ -55,7 +56,7 @@ class IModelDocExtension(BaseInterface):
         options: SWSaveAsOptionsE | None,
         export_data: IExportPdfData | None,
         advanced_save_as_options: IAdvancedSaveAsOptions | None,
-    ) -> bool:
+    ) -> Tuple[bool, SWFileSaveErrorE | None, SWFileSaveWarningE | None]:
         """
         Saves the active document to the specified name with advanced options.
 
@@ -88,6 +89,9 @@ class IModelDocExtension(BaseInterface):
         out_errors = VARIANT(VT_BYREF | VT_I4, None)
         out_warnings = VARIANT(VT_BYREF | VT_I4, None)
 
+        return_errors = None
+        return_warnings = None
+
         com_object = self.com_object.SaveAs3(
             in_name,
             in_version,
@@ -99,12 +103,17 @@ class IModelDocExtension(BaseInterface):
         )
 
         if out_warnings.value != 0:
-            out_warnings = SWFileSaveWarningE(value=out_warnings.value)
-            self.logger.warning(out_warnings.name)
+            try:
+                return_warnings = SWFileSaveWarningE(value=out_warnings.value)
+            except:
+                return_warnings = SWFileSaveWarningE(value=0)
+            self.logger.warning(return_warnings.name)
 
         if out_errors.value != 0:
-            out_errors = SWFileSaveErrorE(value=out_errors.value)
-            self.logger.error(out_errors)
-            raise DocumentError(str(out_errors))
+            try:
+                return_errors = SWFileSaveErrorE(value=out_errors.value)
+            except:
+                return_errors = SWFileSaveErrorE(value=0)
+            self.logger.error(return_errors.name)
 
-        return com_object
+        return (com_object, return_errors, return_warnings)

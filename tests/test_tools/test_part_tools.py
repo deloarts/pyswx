@@ -43,3 +43,23 @@ def test_export_part():
     assert TEST_PART_01_EXPORT_STEP.exists()
 
     swx.close_all_documents(include_unsaved=True)
+
+
+def test_open_associated_drawing():
+
+    from pyswx import PySWX
+    from pyswx.api.sldworks.interfaces.i_drawing_doc import IDrawingDoc
+    from pyswx.api.sldworks.interfaces.i_model_doc_2 import IModelDoc2
+    from pyswx.tools.part_tools import open_associated_drawing
+
+    swx = PySWX().application
+    swx.close_all_documents(include_unsaved=True)
+
+    drw_model, drw_doc = open_associated_drawing(
+        swx=swx, part_path=TEST_PART_01, close_document=True, save_document=False, document_specification=None
+    )
+
+    assert isinstance(drw_model, IModelDoc2)
+    assert isinstance(drw_doc, IDrawingDoc)
+
+    swx.close_all_documents(include_unsaved=True)

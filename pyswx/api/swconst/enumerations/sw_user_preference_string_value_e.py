@@ -5,6 +5,8 @@ User-preference enumerators for system options and document properties.
 
 Reference:
 https://help.solidworks.com/2024/english/api/swconst/SOLIDWORKS.Interop.swconst~SOLIDWORKS.Interop.swconst.swUserPreferenceStringValue_e.html
+
+Status: 🟢
 """
 
 from enum import IntEnum

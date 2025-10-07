@@ -3,6 +3,8 @@ swCreateExplodeStepError_e Enumeration
 
 Reference:
 https://help.solidworks.com/2024/english/api/swconst/SOLIDWORKS.Interop.swconst~SOLIDWORKS.Interop.swconst.swCreateExplodeStepError_e.html
+
+Status: 🟢
 """
 
 from enum import IntEnum
