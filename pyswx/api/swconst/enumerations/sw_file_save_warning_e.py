@@ -3,12 +3,15 @@ swFileSaveWarning_e Enumeration
 
 Reference:
 https://help.solidworks.com/2024/english/api/swconst/SOLIDWORKS.Interop.swconst~SOLIDWORKS.Interop.swconst.swFileSaveWarning_e.html
+
+Status: 🟢
 """
 
 from enum import IntEnum
 
 
 class SWFileSaveWarningE(IntEnum):
+    SW_FILE_SAVE_WARNING_UNKNOWN = 0
     SW_FILE_SAVE_WARNING_REBUILD_ERROR = 1
     SW_FILE_SAVE_WARNING_NEEDS_REBUILD = 2
     SW_FILE_SAVE_WARNING_VIEWS_NEED_UPDATE = 4

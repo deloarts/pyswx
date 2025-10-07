@@ -11,6 +11,7 @@ from pyswx.api.swconst.enumerations.sw_add_to_recent_document_list_e import SWAd
 from pyswx.api.swconst.enumerations.sw_app_notify_e import SWAppNotifyE
 from pyswx.api.swconst.enumerations.sw_application_type_e import SWApplicationTypeE
 from pyswx.api.swconst.enumerations.sw_assembly_load_components_e import SWAssemblyLoadComponentsE
+from pyswx.api.swconst.enumerations.sw_body_type_e import SWBodyTypeE
 from pyswx.api.swconst.enumerations.sw_bom_configuration_anchor_type_e import SWBOMConfigurationAnchorTypeE
 from pyswx.api.swconst.enumerations.sw_cad_family_cfg_options_e import SWCADFamilyCfgOptionsE
 from pyswx.api.swconst.enumerations.sw_child_component_in_bom_option_e import SWChildComponentInBOMOptionE
@@ -21,6 +22,7 @@ from pyswx.api.swconst.enumerations.sw_component_suppression_state_e import SWCo
 from pyswx.api.swconst.enumerations.sw_config_tree_sort_type_e import SWConfigTreeSortTypeE
 from pyswx.api.swconst.enumerations.sw_configuration_options2_e import SWConfigurationOptions2E
 from pyswx.api.swconst.enumerations.sw_configuration_type_e import SWConfigurationTypeE
+from pyswx.api.swconst.enumerations.sw_create_explode_step_error_e import SWCreateExplodeStepErrorE
 from pyswx.api.swconst.enumerations.sw_custom_info_add_result_e import SWCustomInfoAddResultE
 from pyswx.api.swconst.enumerations.sw_custom_info_delete_result_e import SWCustomInfoDeleteResultE
 from pyswx.api.swconst.enumerations.sw_custom_info_get_result_e import SWCustomInfoGetResultE
@@ -29,6 +31,7 @@ from pyswx.api.swconst.enumerations.sw_custom_info_type_e import SWCustomInfoTyp
 from pyswx.api.swconst.enumerations.sw_custom_link_set_result_e import SWCustomLinkSetResultE
 from pyswx.api.swconst.enumerations.sw_custom_property_add_option_e import SWCustomPropertyAddOptionE
 from pyswx.api.swconst.enumerations.sw_document_types_e import SWDocumentTypesE
+from pyswx.api.swconst.enumerations.sw_dwg_paper_sizes_e import SWDwgPaperSizesE
 from pyswx.api.swconst.enumerations.sw_export_data_file_type_e import SWExportDataFileType_e
 from pyswx.api.swconst.enumerations.sw_export_data_sheets_to_export_e import SWExportDataSheetsToExportE
 from pyswx.api.swconst.enumerations.sw_feat_mgr_pane_e import SWFeatMgrPaneE
@@ -38,6 +41,9 @@ from pyswx.api.swconst.enumerations.sw_file_save_error_e import SWFileSaveErrorE
 from pyswx.api.swconst.enumerations.sw_file_save_warning_e import SWFileSaveWarningE
 from pyswx.api.swconst.enumerations.sw_geometry_to_save_e import SWGeometryToSaveE
 from pyswx.api.swconst.enumerations.sw_in_configuration_opts_e import SWInConfigurationOptsE
+from pyswx.api.swconst.enumerations.sw_message_box_btn_e import SWMessageBoxBtnE
+from pyswx.api.swconst.enumerations.sw_message_box_icon_e import SWMessageBoxIconE
+from pyswx.api.swconst.enumerations.sw_message_box_result_e import SWMessageBoxResultE
 from pyswx.api.swconst.enumerations.sw_open_doc_options_e import SWOpenDocOptionsE
 from pyswx.api.swconst.enumerations.sw_rebuild_on_activation_e import SWRebuildOnActivationOptionsE
 from pyswx.api.swconst.enumerations.sw_save_as_options_e import SWSaveAsOptionsE
@@ -45,4 +51,4 @@ from pyswx.api.swconst.enumerations.sw_save_as_version_e import SWSaveAsVersionE
 from pyswx.api.swconst.enumerations.sw_save_items_path_error_e import SWSaveItemsPathErrorE
 from pyswx.api.swconst.enumerations.sw_select_type_e import SWSelectTypeE
 from pyswx.api.swconst.enumerations.sw_task_pane_tab_e import SWTaskPaneTabE
-from pyswx.api.swconst.enumerations.sw_body_type_e import SWBodyTypeE
+from pyswx.api.swconst.enumerations.sw_user_preference_string_value_e import SWUserPreferenceStringValueE

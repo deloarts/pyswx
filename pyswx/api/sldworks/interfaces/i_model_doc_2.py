@@ -20,11 +20,15 @@ from win32com.client import VARIANT
 from pyswx.api.base_interface import BaseInterface
 from pyswx.api.sldworks.interfaces.i_configuration import IConfiguration
 from pyswx.api.sldworks.interfaces.i_configuration_manager import IConfigurationManager
+from pyswx.api.sldworks.interfaces.i_display_dimension import IDisplayDimension
 from pyswx.api.sldworks.interfaces.i_model_doc_extension import IModelDocExtension
+from pyswx.api.swconst.enumerations import SWConfigurationOptions2E
 from pyswx.api.swconst.enumerations import SWDocumentTypesE
+from pyswx.api.swconst.enumerations import SWFeatMgrPaneE
 from pyswx.api.swconst.enumerations import SWFileSaveErrorE
 from pyswx.api.swconst.enumerations import SWFileSaveWarningE
 from pyswx.api.swconst.enumerations import SWSaveAsOptionsE
+from pyswx.exceptions import DocumentError
 
 
 class IModelDoc2(BaseInterface):
@@ -141,6 +145,9 @@ class IModelDoc2(BaseInterface):
 
         Reference:
         https://help.solidworks.com/2024/english/api/sldworksapi/SolidWorks.Interop.sldworks~SolidWorks.Interop.sldworks.IModelDoc2~Save3.html
+
+        Raises:
+            DocumentError: Raised if there is an error saving the document.
         """
         in_options = VARIANT(VT_I4, options.value) if options else VARIANT(VT_I4, 0)
 
@@ -155,8 +162,7 @@ class IModelDoc2(BaseInterface):
 
         if out_errors.value != 0:
             out_errors = SWFileSaveErrorE(value=out_errors.value)
-            self.logger.error(out_errors)
-            raise Exception(out_errors)
+            raise DocumentError(str(out_errors))
 
         return com_object
 
@@ -166,31 +172,44 @@ class IModelDoc2(BaseInterface):
         """Obsolete. Superseded by IFeatureMgrView::ActivateView."""
         raise NotImplementedError
 
-    def activate_selected_feature(self):
+    def activate_selected_feature(self) -> None:
         """Activates the selected feature for editing."""
-        raise NotImplementedError
+        self.com_object.ActivateSelectedFeature
 
     def add_configuration(self):
         """Obsolete. Superseded by IModelDoc2::AddConfiguration3."""
         raise NotImplementedError
 
-    def add_configuration2(self):
+    def add_configuration_2(self):
         """Obsolete. Superseded by IModelDoc2::AddConfiguration3."""
         raise NotImplementedError
 
-    def add_configuration3(self):
-        """Adds a new configuration to this model document."""
-        raise NotImplementedError
+    def add_configuration_3(
+        self, name: str, comment: str, alternate_name: str, options: SWConfigurationOptions2E
+    ) -> IConfiguration:
+        """
+        Adds a new configuration to this model document.
+
+        Reference:
+        https://help.solidworks.com/2024/english/api/sldworksapi/SolidWorks.Interop.sldworks~SolidWorks.Interop.sldworks.IModelDoc2~AddConfiguration3.html
+        """
+        in_name = VARIANT(VT_BSTR, name)
+        in_comment = VARIANT(VT_BSTR, comment)
+        in_alternate_name = VARIANT(VT_BSTR, alternate_name)
+        in_options = VARIANT(VT_I4, options.value)
+
+        com_object = self.com_object.AddConfiguration3(in_name, in_comment, in_alternate_name, in_options)
+        return IConfiguration(com_object)
 
     def add_custom_info(self):
         """Obsolete. Superseded by IModelDocExtension::CustomPropertyManager."""
         raise NotImplementedError
 
-    def add_custom_info2(self):
+    def add_custom_info_2(self):
         """Obsolete. Superseded by IModelDocExtension::CustomPropertyManager."""
         raise NotImplementedError
 
-    def add_custom_info3(self):
+    def add_custom_info_3(self):
         """Obsolete. Superseded by IModelDocExtension::CustomPropertyManager."""
         raise NotImplementedError
 
@@ -198,29 +217,60 @@ class IModelDoc2(BaseInterface):
         """Obsolete. Superseded by IModelDoc2::AddDiameterDimension2."""
         raise NotImplementedError
 
-    def add_diameter_dimension2(self):
-        """Adds a diameter dimension at the specified location for the selected item."""
-        raise NotImplementedError
+    def add_diameter_dimension_2(self, x: float, y: float, z: float) -> IDisplayDimension:
+        """
+        Adds a diameter dimension at the specified location for the selected item.
+
+        Reference:
+        https://help.solidworks.com/2024/english/api/sldworksapi/SolidWorks.Interop.sldworks~SolidWorks.Interop.sldworks.IModelDoc2~AddDiameterDimension2.html
+        """
+        in_x = VARIANT(VT_R8, x)
+        in_y = VARIANT(VT_R8, y)
+        in_z = VARIANT(VT_R8, z)
+
+        com_object = self.com_object.AddDiameterDimension2(in_x, in_y, in_z)
+        return IDisplayDimension(com_object)
 
     def add_dimension(self):
         """Obsolete. Superseded by IModelDoc2::AddDimension2."""
         raise NotImplementedError
 
-    def add_dimension2(self):
-        """Creates a display dimension at the specified location for selected entities."""
-        raise NotImplementedError
+    def add_dimension_2(self, x: float, y: float, z: float) -> IDisplayDimension:
+        """
+        Creates a display dimension at the specified location for selected entities.
+
+        Reference:
+        https://help.solidworks.com/2024/english/api/sldworksapi/SolidWorks.Interop.sldworks~SolidWorks.Interop.sldworks.IModelDoc2~AddDimension2.html
+        """
+        in_x = VARIANT(VT_R8, x)
+        in_y = VARIANT(VT_R8, y)
+        in_z = VARIANT(VT_R8, z)
+
+        com_object = self.com_object.AddDimension2(in_x, in_y, in_z)
+        return IDisplayDimension(com_object)
 
     def add_feature_mgr_view(self):
         """Obsolete. Superseded by IModelDoc2::AddFeatureMgrView3."""
         raise NotImplementedError
 
-    def add_feature_mgr_view2(self):
+    def add_feature_mgr_view_2(self):
         """Obsolete. Superseded by IModelDoc2::AddFeatureMgrView3."""
         raise NotImplementedError
 
-    def add_feature_mgr_view3(self):
-        """Adds the specified tab to the FeatureManager design tree view."""
-        raise NotImplementedError
+    def add_feature_mgr_view_3(self, bitmap: int, app_view: int, tooltip: str, which_pane: SWFeatMgrPaneE) -> bool:
+        """
+        Adds the specified tab to the FeatureManager design tree view.
+
+        Reference:
+        https://help.solidworks.com/2024/english/api/sldworksapi/SolidWorks.Interop.sldworks~SolidWorks.Interop.sldworks.IModelDoc2~AddFeatureMgrView3.html
+        """
+        in_bitmap = VARIANT(VT_I4, bitmap)
+        in_app_view = VARIANT(VT_I4, app_view)
+        in_tooltip = VARIANT(VT_BSTR, tooltip)
+        in_which_pane = VARIANT(VT_I4, which_pane.value)
+
+        com_object = self.com_object.AddFeatureMgrView3(in_bitmap, in_app_view, in_tooltip, in_which_pane)
+        return bool(com_object)
 
     def add_horizontal_dimension(self):
         """Obsolete. Superseded by IModelDoc2::AddHorizontalDimension2."""

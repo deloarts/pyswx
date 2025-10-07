@@ -2,9 +2,9 @@
 Base interface for all API interfaces.
 """
 
-import logging
+from logging import Logger
 
-from pyswx.logger import create_logger
+from pyswx.logger import log
 
 
 class BaseInterface:
@@ -18,5 +18,5 @@ class BaseInterface:
         pass
 
     @property
-    def logger(self) -> logging.Logger:
-        return create_logger()
+    def logger(self) -> Logger:
+        return log.logger

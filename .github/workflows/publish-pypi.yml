@@ -33,6 +33,7 @@ jobs:
         run: C:\Users\runneradmin\AppData\Roaming\Python\Scripts\poetry install --sync --no-interaction
 
       - name: Clean dist folder
+        shell: cmd
         run: |
           if exist dist rmdir /s /q dist
 

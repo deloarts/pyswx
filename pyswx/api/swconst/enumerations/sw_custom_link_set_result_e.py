@@ -16,6 +16,4 @@ class SWCustomLinkSetResultE(IntEnum):
     SW_CUSTOM_LINK_SET_RESULT_OK = 0  # Success
     SW_CUSTOM_LINK_SET_RESULT_NOT_PRESENT = 1  # Custom property does not exist
     SW_CUSTOM_LINK_SET_RESULT_LEGACY = 2  # Legacy properties cannot be linked/unlinked
-    SW_CUSTOM_LINK_SET_RESULT_USER_PROP = (
-        3  # User-defined properties cannot be linked/unlinked
-    )
+    SW_CUSTOM_LINK_SET_RESULT_USER_PROP = 3  # User-defined properties cannot be linked/unlinked

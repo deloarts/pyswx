@@ -3,6 +3,8 @@ swTaskPaneTab_e Enumeration
 
 Reference:
 https://help.solidworks.com/2019/english/api/swconst/SOLIDWORKS.Interop.swconst~SOLIDWORKS.Interop.swconst.swTaskPaneTab_e.html
+
+Status: 🟢
 """
 
 from enum import IntEnum

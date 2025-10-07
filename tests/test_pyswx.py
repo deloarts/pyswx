@@ -6,7 +6,7 @@ from pyswx.const import VERSION
 
 
 def test_version():
-    assert VERSION == "0.3.1"
+    assert VERSION == "0.4.0"
 
 
 def test_pyswx():
@@ -19,4 +19,4 @@ def test_pyswx():
 
     assert swx.visible  # This is set in conftest.py
     assert swx.startup_process_completed
-    assert swx.user_control == False
+    assert swx.user_control == True
