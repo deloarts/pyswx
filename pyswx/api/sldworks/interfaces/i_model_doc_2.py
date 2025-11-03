@@ -1052,3 +1052,12 @@ class IModelDoc2(BaseInterface):
 
         com_object = self.com_object.ShowConfiguration2(in_configuration_name)
         return bool(com_object)
+
+    def window_redraw(self) -> None:
+        """
+        Redraws the current window.
+
+        Reference:
+        https://help.solidworks.com/2024/english/api/sldworksapi/SolidWorks.Interop.sldworks~SolidWorks.Interop.sldworks.IModelDoc2~WindowRedraw.html
+        """
+        self.com_object.WindowRedraw
