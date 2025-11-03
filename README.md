@@ -290,6 +290,7 @@ indicator | status | description
 
 ## 5 changelog
 
+[**v0.5.0**](https://github.com/deloarts/pyswx/releases/tag/v0.5.0): Update IModelDoc2 api.  
 [**v0.4.0**](https://github.com/deloarts/pyswx/releases/tag/v0.4.0): Add const api, improve return values.  
 [**v0.3.1**](https://github.com/deloarts/pyswx/releases/tag/v0.3.1): Fix type mismatch in `custom_property_manager`.  
 [**v0.3.0**](https://github.com/deloarts/pyswx/releases/tag/v0.3.0): Complete ICustomPropertyManager interface.  
