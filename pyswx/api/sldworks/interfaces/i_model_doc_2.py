@@ -91,83 +91,6 @@ class IModelDoc2(BaseInterface):
         in_values = VARIANT(VT_ARRAY | VT_R8, values)
         self.com_object.MaterialPropertyValues = in_values
 
-    def insert_object(self) -> None:
-        """
-        Activates the Microsoft Insert Object dialog.
-
-        Reference:
-        https://help.solidworks.com/2024/english/api/sldworksapi/SOLIDWORKS.Interop.sldworks~SOLIDWORKS.Interop.sldworks.IModelDoc2~InsertObject.html
-        """
-        self.com_object.InsertObject()
-
-    def get_configuration_names(self) -> List[str]:
-        """
-        Gets the names of the configurations in this document.
-
-        Reference:
-        https://help.solidworks.com/2024/english/api/sldworksapi/SOLIDWORKS.Interop.sldworks~SOLIDWORKS.Interop.sldworks.IModelDoc2~GetConfigurationNames.html
-        """
-        com_object = self.com_object.GetConfigurationNames
-        return [str(name) for name in com_object] if com_object else []
-
-    def get_path_name(self) -> Path:
-        """
-        Gets the full path name for this document, including the file name.
-
-        Reference:
-        https://help.solidworks.com/2024/english/api/sldworksapi/SolidWorks.Interop.sldworks~SolidWorks.Interop.sldworks.IModelDoc2~GetPathName.html
-        """
-        com_object = self.com_object.GetPathName
-        return Path(com_object)
-
-    def get_title(self) -> str:
-        """
-        Gets the title of the document that appears in the active window's title bar.
-
-        Reference:
-        https://help.solidworks.com/2024/english/api/sldworksapi/solidworks.interop.sldworks~solidworks.interop.sldworks.imodeldoc2~gettitle.html
-        """
-        com_object = self.com_object.GetTitle
-        return str(com_object)
-
-    def get_type(self) -> SWDocumentTypesE:
-        """Gets the type of the document.
-
-        Reference:
-        https://help.solidworks.com/2024/english/api/sldworksapi/SOLIDWORKS.Interop.sldworks~SOLIDWORKS.Interop.sldworks.IModelDoc2~GetType.html
-        """
-        com_object = self.com_object.GetType
-        return SWDocumentTypesE(com_object)
-
-    def save_3(self, options: SWSaveAsOptionsE | None) -> bool:
-        """
-        Saves the current document.
-
-        Reference:
-        https://help.solidworks.com/2024/english/api/sldworksapi/SolidWorks.Interop.sldworks~SolidWorks.Interop.sldworks.IModelDoc2~Save3.html
-
-        Raises:
-            DocumentError: Raised if there is an error saving the document.
-        """
-        in_options = VARIANT(VT_I4, options.value) if options else VARIANT(VT_I4, 0)
-
-        out_errors = VARIANT(VT_BYREF | VT_I4, None)
-        out_warnings = VARIANT(VT_BYREF | VT_I4, None)
-
-        com_object = self.com_object.Save3(in_options, out_errors, out_warnings)
-
-        if out_warnings.value != 0:
-            out_warnings = SWFileSaveWarningE(value=out_warnings.value)
-            self.logger.warning(out_warnings.name)
-
-        if out_errors.value != 0:
-            out_errors = SWFileSaveErrorE(value=out_errors.value)
-            raise DocumentError(str(out_errors))
-
-        return com_object
-
-    # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
     def activate_feature_mgr_view(self):
         """Obsolete. Superseded by IFeatureMgrView::ActivateView."""
         raise NotImplementedError
@@ -1089,9 +1012,15 @@ class IModelDoc2(BaseInterface):
         """Gets the number of configurations."""
         raise NotImplementedError
 
-    def get_configuration_names(self):
-        """Gets the names of the configurations in this document."""
-        raise NotImplementedError
+    def get_configuration_names(self) -> List[str]:
+        """
+        Gets the names of the configurations in this document.
+
+        Reference:
+        https://help.solidworks.com/2024/english/api/sldworksapi/SOLIDWORKS.Interop.sldworks~SOLIDWORKS.Interop.sldworks.IModelDoc2~GetConfigurationNames.html
+        """
+        com_object = self.com_object.GetConfigurationNames
+        return [str(name) for name in com_object] if com_object else []
 
     def get_consider_leaders_as_lines(self):
         """Gets whether the display data of a leader is included as lines when the lines are retrieved from a view or annotation in this document."""
@@ -1257,9 +1186,15 @@ class IModelDoc2(BaseInterface):
         """Gets the number of strings returned by IModelDoc2::GetDependencies2."""
         raise NotImplementedError
 
-    def get_path_name(self):
-        """Gets the full path name for this document, including the file name."""
-        raise NotImplementedError
+    def get_path_name(self) -> Path:
+        """
+        Gets the full path name for this document, including the file name.
+
+        Reference:
+        https://help.solidworks.com/2024/english/api/sldworksapi/SolidWorks.Interop.sldworks~SolidWorks.Interop.sldworks.IModelDoc2~GetPathName.html
+        """
+        com_object = self.com_object.GetPathName
+        return Path(com_object)
 
     def get_point_light_properties(self):
         """Gets point light properties."""
@@ -1309,17 +1244,28 @@ class IModelDoc2(BaseInterface):
         """Gets the shaded-display image quality number for the current document."""
         raise NotImplementedError
 
-    def get_title(self):
-        """Gets the title of the document that appears in the active window's title bar."""
-        raise NotImplementedError
+    def get_title(self) -> str:
+        """
+        Gets the title of the document that appears in the active window's title bar.
+
+        Reference:
+        https://help.solidworks.com/2024/english/api/sldworksapi/solidworks.interop.sldworks~solidworks.interop.sldworks.imodeldoc2~gettitle.html
+        """
+        com_object = self.com_object.GetTitle
+        return str(com_object)
 
     def get_toolbar_visibility(self):
         """Gets the visibility of a toolbar."""
         raise NotImplementedError
 
-    def get_type(self):
-        """Gets the type of the document."""
-        raise NotImplementedError
+    def get_type(self) -> SWDocumentTypesE:
+        """Gets the type of the document.
+
+        Reference:
+        https://help.solidworks.com/2024/english/api/sldworksapi/SOLIDWORKS.Interop.sldworks~SOLIDWORKS.Interop.sldworks.IModelDoc2~GetType.html
+        """
+        com_object = self.com_object.GetType
+        return SWDocumentTypesE(com_object)
 
     def get_units(self):
         """Gets the current unit settings, fraction base, fraction value, and significant digits."""
@@ -2013,9 +1959,14 @@ class IModelDoc2(BaseInterface):
         """Inserts a note in this document."""
         raise NotImplementedError
 
-    def insert_object(self):
-        """Activates the Microsoft Insert Object dialog."""
-        raise NotImplementedError
+    def insert_object(self) -> None:
+        """
+        Activates the Microsoft Insert Object dialog.
+
+        Reference:
+        https://help.solidworks.com/2024/english/api/sldworksapi/SOLIDWORKS.Interop.sldworks~SOLIDWORKS.Interop.sldworks.IModelDoc2~InsertObject.html
+        """
+        self.com_object.InsertObject()
 
     def insert_object_from_file(self):
         """Obsolete. Superseded by IModelDocExtension::InsertObjectFromFile."""
@@ -2445,9 +2396,32 @@ class IModelDoc2(BaseInterface):
         """Obsolete. Superseded by IModelDoc2::Save3."""
         raise NotImplementedError
 
-    def save3(self):
-        """Saves the current document."""
-        raise NotImplementedError
+    def save_3(self, options: SWSaveAsOptionsE | None) -> bool:
+        """
+        Saves the current document.
+
+        Reference:
+        https://help.solidworks.com/2024/english/api/sldworksapi/SolidWorks.Interop.sldworks~SolidWorks.Interop.sldworks.IModelDoc2~Save3.html
+
+        Raises:
+            DocumentError: Raised if there is an error saving the document.
+        """
+        in_options = VARIANT(VT_I4, options.value) if options else VARIANT(VT_I4, 0)
+
+        out_errors = VARIANT(VT_BYREF | VT_I4, None)
+        out_warnings = VARIANT(VT_BYREF | VT_I4, None)
+
+        com_object = self.com_object.Save3(in_options, out_errors, out_warnings)
+
+        if out_warnings.value != 0:
+            out_warnings = SWFileSaveWarningE(value=out_warnings.value)
+            self.logger.warning(out_warnings.name)
+
+        if out_errors.value != 0:
+            out_errors = SWFileSaveErrorE(value=out_errors.value)
+            raise DocumentError(str(out_errors))
+
+        return com_object
 
     def save_as(self):
         """Obsolete. Superseded by IModelDocExtension::SaveAs."""
