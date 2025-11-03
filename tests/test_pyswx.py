@@ -6,7 +6,7 @@ from pyswx.const import VERSION
 
 
 def test_version():
-    assert VERSION == "0.4.0"
+    assert VERSION == "0.5.0"
 
 
 def test_pyswx():
