@@ -1448,6 +1448,9 @@ class ISldWorks(BaseInterface):
         in_specification = VARIANT(VT_DISPATCH, specification.com_object)
         com_object = self.com_object.OpenDoc7(in_specification)
 
+        out_errors = VARIANT(VT_BYREF | VT_I4, None)
+        out_warnings = VARIANT(VT_BYREF | VT_I4, None)
+
         if in_specification.value.Warning != 0:
             try:
                 out_warnings = SWFileLoadWarningE(value=in_specification.value.Warning)
