@@ -1,6 +1,6 @@
 # PySWX
 
-A python wrapper for the SolidWorks API.
+<!-- A python wrapper for the SolidWorks API. -->
 
 ![state](https://img.shields.io/badge/State-beta-red.svg)
 ![version](https://img.shields.io/github/v/release/deloarts/pyswx?color=orange)
@@ -9,9 +9,9 @@ A python wrapper for the SolidWorks API.
 ![OS](https://img.shields.io/badge/OS-WIN11-blue.svg)
 [![Publish](https://github.com/deloarts/pyswx/actions/workflows/publish-pypi.yml/badge.svg)](https://github.com/deloarts/pyswx/actions/workflows/publish-pypi.yml)
 
-<img src="https://github.com/deloarts/pyswx/blob/main/assets/images/icon.png?raw=true" width="200" height="200">
+<!-- <img src="https://github.com/deloarts/pyswx/blob/main/assets/images/icon.png?raw=true" width="200" height="200">
 <br>
-<br>
+<br> -->
 
 **PySWX** is a wrapper for the SolidWorks API 2024, based on the [official help site](https://help.solidworks.com/2024/english/api/sldworksapiprogguide/Welcome.htm). It provides a typed interface and some useful features.
 
@@ -81,23 +81,22 @@ part_open_spec.use_light_weight_default = True
 part_open_spec.light_weight = True
 part_open_spec.silent = True
 
-part_model = swx.open_doc7(specification=part_open_spec)
+part_model, warning, error = swx.open_doc7(specification=part_open_spec)
 
-if part_open_spec.warning is not None:
-    swx.logger.warning(part_open_spec.warning.name)
+assert part_model
+assert warning is None
+assert error is None
 
-if part_open_spec.error is not None:
-    swx.logger.error(part_open_spec.error.name)
-    raise Exception(part_open_spec.error.name)
-
-part_model = swx.activate_doc_3(
+part_model, error = swx.activate_doc_3(
     name=part_model.get_path_name(),
     use_user_preferences=False,
     option=SWRebuildOnActivationOptionsE.SW_REBUILD_ACTIVE_DOC,
 )
 
-step_path = part_model.get_path_name().with_suffix(".step")
+assert part_model
+assert error is None
 
+step_path = part_model.get_path_name().with_suffix(".step")
 part_model.extension.save_as_3(
     name=step_path,
     version=SWSaveAsVersionE.SW_SAVE_AS_CURRENT_VERSION,
@@ -131,7 +130,7 @@ For all tools check out the [tools]([/tools](https://github.com/deloarts/pyswx/t
 
 ```python
 ...
-doc_model = swx.open_doc7(specification=part_open_spec)
+doc_model, warning, error = swx.open_doc7(specification=part_open_spec)
 doc_model_com_object = doc_model.com_object # Here we access the actual com object
 configuration_names_com_object = doc_model_com_object.GetConfigurationNames
 
@@ -170,6 +169,14 @@ type ParamValues = List[str]
 def get_configuration_params(self, config_name: str) -> Tuple[ParamsRetrieved, ParamNames, ParamValues]:
     ...
 ```
+
+Another divergency is the handling of warnings and errors. Those are also returned as a tuple and can be handled after the function call. You already encountered this behavior before here:
+
+```python
+part_model, warning, error = swx.open_doc7(specification=part_open_spec)
+```
+
+The method `open_doc7` returns not only the model, but also warnings and errors that might happen during the call. It's up to you how to process these.
 
 ### 2.5 obsolete methods and properties
 
