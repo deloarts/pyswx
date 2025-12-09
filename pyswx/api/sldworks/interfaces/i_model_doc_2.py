@@ -30,6 +30,7 @@ from pyswx.api.swconst.enumerations import SWFileSaveErrorE
 from pyswx.api.swconst.enumerations import SWFileSaveWarningE
 from pyswx.api.swconst.enumerations import SWSaveAsOptionsE
 from pyswx.api.swconst.enumerations import SWSaveAsVersionE
+from pyswx.api.swconst.enumerations import SWStandardViewsE
 
 
 class IModelDoc2(BaseInterface):
@@ -2708,9 +2709,16 @@ class IModelDoc2(BaseInterface):
         """Obsolete. Superseded by IModelDoc2::ShowNameView2."""
         raise NotImplementedError
 
-    def show_named_view2(self):
-        """Shows the specified view."""
-        raise NotImplementedError
+    def show_named_view2(self, name: str, view_id: SWStandardViewsE):
+        """
+        Shows the specified view.
+
+        Reference: https://help.solidworks.com/2024/english/api/sldworksapi/SOLIDWORKS.Interop.sldworks~SOLIDWORKS.Interop.sldworks.IModelDoc2~ShowNamedView2.html
+        """
+        in_name = VARIANT(VT_BSTR, name)
+        in_view_id = VARIANT(VT_I4, view_id.value)
+
+        self.com_object.ShowNamedView2(in_name, in_view_id)
 
     def show_solid_body(self):
         """Shows the selected solid body."""
@@ -3117,12 +3125,23 @@ class IModelDoc2(BaseInterface):
         raise NotImplementedError
 
     def view_zoomin(self):
-        """Zooms the current view in by a factor of 20%."""
+        """
+        Zooms the current view in by a factor of 20%.
+
+        Reference:
+        https://help.solidworks.com/2024/english/api/sldworksapi/solidworks.interop.sldworks~solidworks.interop.sldworks.imodeldoc2~viewzoomin.html
+        """
+        self.com_object.ViewZoomin()
         raise NotImplementedError
 
     def view_zoomout(self):
-        """Zooms the current view out by a factor of 20%."""
-        raise NotImplementedError
+        """
+        Zooms the current view out by a factor of 20%.
+
+        Reference:
+        https://help.solidworks.com/2024/english/api/sldworksapi/SOLIDWORKS.Interop.sldworks~SOLIDWORKS.Interop.sldworks.IModelDoc2~ViewZoomout.html
+        """
+        self.com_object.ViewZoomout()
 
     def view_zoomto(self):
         """Zooms the view to the selected box."""
@@ -3137,8 +3156,13 @@ class IModelDoc2(BaseInterface):
         raise NotImplementedError
 
     def view_zoomtofit2(self):
-        """Zooms the currently active view to fit the screen."""
-        raise NotImplementedError
+        """
+        Zooms the currently active view to fit the screen.
+
+        Reference:
+        https://help.solidworks.com/2024/english/api/sldworksapi/solidworks.interop.sldworks~solidworks.interop.sldworks.imodeldoc2~viewzoomtofit2.html
+        """
+        self.com_object.ViewZoomtofit2()
 
     def view_zoom_to_selection(self):
         """Zooms the display to the selection."""
@@ -3151,4 +3175,4 @@ class IModelDoc2(BaseInterface):
         Reference:
         https://help.solidworks.com/2024/english/api/sldworksapi/SolidWorks.Interop.sldworks~SolidWorks.Interop.sldworks.IModelDoc2~WindowRedraw.html
         """
-        self.com_object.WindowRedraw
+        self.com_object.WindowRedraw()

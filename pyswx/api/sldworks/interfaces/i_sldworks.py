@@ -375,7 +375,7 @@ class ISldWorks(BaseInterface):
         com_object = self.com_object.CloseAllDocuments(in_include_unsaved)
         return bool(com_object)
 
-    def close_and_reopen(self, doc: IModelDoc2, option: SWCloseReopenOptionE) -> Tuple[SWCloseReopenErrorE, IModelDoc2]:
+    def close_and_reopen(self, doc: IModelDoc2, option: SWCloseReopenOptionE) -> Tuple[IModelDoc2, SWCloseReopenErrorE]:
         """
         Closes and reopens the specified drawing document without unloading its references from memory.
 
@@ -394,7 +394,7 @@ class ISldWorks(BaseInterface):
         out_new_doc = VARIANT(VT_BYREF | VT_DISPATCH, None)
 
         com_object = self.com_object.CloseAndReopen(in_doc, in_option, out_new_doc)
-        return (SWCloseReopenErrorE(com_object), IModelDoc2(out_new_doc.value))
+        return (IModelDoc2(out_new_doc.value), SWCloseReopenErrorE(com_object))
 
     def close_and_reopen2(
         self, doc: IModelDoc2, option: SWCloseReopenOptionE
