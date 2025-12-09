@@ -221,35 +221,35 @@ class ISldWorks(BaseInterface):
         name: Path,
         use_user_preferences: bool,
         option: SWRebuildOnActivationOptionsE,
-    ) -> IModelDoc2:
+    ) -> Tuple[IModelDoc2 | None, SWDocActivateErrorE | None]:
         """
         Activates a loaded document and rebuilds it as specified.
 
         Reference:
         https://help.solidworks.com/2024/english/api/sldworksapi/solidworks.interop.sldworks~solidworks.interop.sldworks.isldworks~activatedoc3.html
-
-        Raises:
-            DocumentError: Raised if there is an error activating the document.
         """
 
         in_name = VARIANT(VT_BSTR, name.name)
         in_use_user_preferences = VARIANT(VT_BOOL, use_user_preferences)
         in_option = VARIANT(VT_I4, option)
 
-        out_errors = VARIANT(VT_BYREF | VT_I4, None)
+        out_error = VARIANT(VT_BYREF | VT_I4, None)
 
         model_doc = self.com_object.ActivateDoc3(
             in_name,
             in_use_user_preferences,
             in_option,
-            out_errors,
+            out_error,
         )
 
-        if out_errors.value != 0:
-            out_errors = SWDocActivateErrorE(value=out_errors.value)
-            raise DocumentError(str(out_errors))
+        if out_error.value != 0:
+            out_error = SWDocActivateErrorE(value=out_error.value)
+            self.logger.error(out_error.name)
 
-        return IModelDoc2(model_doc)
+        return (
+            IModelDoc2(model_doc) if model_doc else None,
+            out_error if isinstance(out_error, SWDocActivateErrorE) else None,
+        )
 
     def activate_task_pane(self):
         """
@@ -381,6 +381,9 @@ class ISldWorks(BaseInterface):
 
         Reference:
         https://help.solidworks.com/2024/english/api/sldworksapi/SolidWorks.Interop.sldworks~SolidWorks.Interop.sldworks.ISldWorks~CloseAndReopen.html
+
+        Raises:
+             - DocumentError: Raised when `doc` is not a drawing
         """
         if doc.get_type() != SWDocumentTypesE.SW_DOC_DRAWING:
             raise DocumentError("Document is not a drawing")
@@ -401,6 +404,9 @@ class ISldWorks(BaseInterface):
 
         Reference:
         https://help.solidworks.com/2024/english/api/sldworksapi/SolidWorks.Interop.sldworks~SolidWorks.Interop.sldworks.ISldWorks~CloseAndReopen2.html
+
+        Raises:
+             - DocumentError: Raised when `doc` is not a drawing
         """
         if doc.get_type() != SWDocumentTypesE.SW_DOC_DRAWING:
             raise DocumentError("Document is not a drawing")
@@ -1385,7 +1391,7 @@ class ISldWorks(BaseInterface):
         file_type: SWDocumentTypesE,
         options: SWOpenDocOptionsE | None = None,
         configuration: str | None = None,
-    ) -> IModelDoc2:
+    ) -> Tuple[IModelDoc2 | None, SWFileLoadWarningE | None, SWFileLoadErrorE | None]:
         """
         Opens an existing document and returns a pointer to the document object.
 
@@ -1419,11 +1425,17 @@ class ISldWorks(BaseInterface):
 
         if out_errors.value != 0:
             out_errors = SWFileLoadErrorE(value=out_errors.value)
-            raise DocumentError(out_errors.name)
+            self.logger.error(out_errors.name)
 
-        return IModelDoc2(com_object)
+        return (
+            IModelDoc2(com_object) if com_object else None,
+            out_warnings if isinstance(out_warnings, SWFileLoadWarningE) else None,
+            out_errors if isinstance(out_errors, SWFileLoadErrorE) else None,
+        )
 
-    def open_doc7(self, specification: IDocumentSpecification) -> IModelDoc2 | None:
+    def open_doc7(
+        self, specification: IDocumentSpecification
+    ) -> Tuple[IModelDoc2 | None, SWFileLoadWarningE | None, SWFileLoadErrorE | None]:
         """
         Opens an existing document using a specification object and returns a pointer to the document object.
 
@@ -1445,9 +1457,13 @@ class ISldWorks(BaseInterface):
 
         if in_specification.value.Error != 0:
             out_errors = SWFileLoadErrorE(value=in_specification.value.Error)
-            raise DocumentError(str(out_errors))
+            self.logger.error(out_errors.name)
 
-        return IModelDoc2(com_object) if com_object else None
+        return (
+            IModelDoc2(com_object) if com_object else None,
+            out_warnings if isinstance(out_warnings, SWFileLoadWarningE) else None,
+            out_errors if isinstance(out_errors, SWFileLoadErrorE) else None,
+        )
 
     def paste_appearance(self):
         """
