@@ -1,4 +1,5 @@
 from tests.conftest import TEST_PART_01
+from tests.conftest import TEST_PART_01_EXPORT_PNG
 from tests.conftest import TEST_PART_01_EXPORT_STEP
 
 
@@ -21,9 +22,7 @@ def test_open_part():
     swx.close_all_documents(include_unsaved=True)
 
 
-def test_export_part():
-    """"""
-
+def test_export_part_step():
     from pyswx import PySWX
     from pyswx.tools.part_tools import export_part
 
@@ -41,6 +40,28 @@ def test_export_part():
     )
 
     assert TEST_PART_01_EXPORT_STEP.exists()
+
+    swx.close_all_documents(include_unsaved=True)
+
+
+def test_export_part_png():
+    from pyswx import PySWX
+    from pyswx.tools.part_tools import export_part
+
+    swx = PySWX().application
+    swx.close_all_documents(include_unsaved=True)
+
+    export_part(
+        swx=swx,
+        part_path=TEST_PART_01,
+        export_type="png",
+        export_path=TEST_PART_01_EXPORT_PNG,
+        close_document=True,
+        save_document=False,
+        document_specification=None,
+    )
+
+    assert TEST_PART_01_EXPORT_PNG.exists()
 
     swx.close_all_documents(include_unsaved=True)
 

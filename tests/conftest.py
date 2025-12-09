@@ -15,6 +15,7 @@ TEST_ROOT = Path(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "t
 TEST_OBJECTS = Path(TEST_ROOT, "objects")
 TEST_PART_01 = Path(TEST_OBJECTS, "test_01.sldprt")
 TEST_PART_01_EXPORT_STEP = Path(TEST_OBJECTS, "test_01.step")
+TEST_PART_01_EXPORT_PNG = Path(TEST_OBJECTS, "test_01.png")
 TEST_PART_02 = Path(TEST_OBJECTS, "test_02.sldprt")
 TEST_DRAWING_01 = Path(TEST_OBJECTS, "test_01.slddrw")
 TEST_DRAWING_01_EXPORT_PDF = Path(TEST_OBJECTS, "test_01.pdf")
