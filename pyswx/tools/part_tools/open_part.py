@@ -49,7 +49,7 @@ def open_part(
     part_open_spec.light_weight = True
     part_open_spec.silent = True
     part_open_spec.ignore_hidden_components = True
-    part_model = swx.open_doc7(specification=document_specification or part_open_spec)
+    part_model, warning, error = swx.open_doc7(specification=document_specification or part_open_spec)
 
     if part_open_spec.warning is not None:
         swx.logger.warning(part_open_spec.warning.name)
@@ -58,6 +58,12 @@ def open_part(
         swx.logger.error(part_open_spec.error.name)
         raise DocumentError(part_open_spec.error.name)
 
+    if warning is not None:
+        swx.logger.warning(warning.name)
+
+    if error is not None:
+        raise DocumentError(f"Failed to open document: {error.name}")
+
     if part_model is None:
         raise ValueError("No active document found")
 
@@ -65,10 +71,15 @@ def open_part(
     if model_type != SWDocumentTypesE.SW_DOC_PART:
         raise ValueError(f"Active document is not a part: {model_type.name}")
 
-    part_model = swx.activate_doc_3(
+    part_model, error = swx.activate_doc_3(
         name=part_model.get_path_name(),
         use_user_preferences=False,
         option=SWRebuildOnActivationOptionsE.SW_REBUILD_ACTIVE_DOC,
     )
+    if error is not None:
+        raise DocumentError(f"Failed to open document: {error.name}")
+
+    if part_model is None:
+        raise DocumentError("Failed to activate document")
 
     return part_model, IPartDoc(part_model.com_object)

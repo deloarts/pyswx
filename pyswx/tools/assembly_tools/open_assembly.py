@@ -51,7 +51,7 @@ def open_assembly(
     assembly_open_spec.silent = True
     assembly_open_spec.ignore_hidden_components = True
     assembly_open_spec.view_only = False
-    assembly_model = swx.open_doc7(specification=document_specification or assembly_open_spec)
+    assembly_model, warning, error = swx.open_doc7(specification=document_specification or assembly_open_spec)
 
     if assembly_open_spec.warning is not None:
         swx.logger.warning(assembly_open_spec.warning.name)
@@ -60,17 +60,29 @@ def open_assembly(
         swx.logger.error(assembly_open_spec.error.name)
         raise DocumentError(assembly_open_spec.error.name)
 
+    if warning is not None:
+        swx.logger.warning(warning.name)
+
+    if error is not None:
+        raise DocumentError(f"Failed to open document: {error.name}")
+
     if assembly_model is None:
-        raise ValueError("No active document found")
+        raise DocumentError("No active document found")
 
     model_type = assembly_model.get_type()
     if model_type != SWDocumentTypesE.SW_DOC_ASSEMBLY:
-        raise ValueError(f"Active document is not an assembly: {model_type.name}")
+        raise DocumentError(f"Active document is not an assembly: {model_type.name}")
 
-    assembly_model = swx.activate_doc_3(
+    assembly_model, error = swx.activate_doc_3(
         name=assembly_model.get_path_name(),
         use_user_preferences=False,
         option=SWRebuildOnActivationOptionsE.SW_REBUILD_ACTIVE_DOC,
     )
+
+    if error is not None:
+        raise DocumentError(f"Failed to open document: {error.name}")
+
+    if assembly_model is None:
+        raise DocumentError("Failed to activate document")
 
     return assembly_model, IAssemblyDoc(assembly_model.com_object)

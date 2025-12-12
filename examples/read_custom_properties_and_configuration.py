@@ -16,11 +16,12 @@ swx = PySWX().application
 model = swx.active_doc
 assert model is not None, "No active document found"
 
-model = swx.activate_doc_3(
+model, _ = swx.activate_doc_3(
     name=model.get_path_name(),
     use_user_preferences=False,
     option=SWRebuildOnActivationOptionsE.SW_REBUILD_ACTIVE_DOC,
 )
+assert model is not None, "Failed to activate document"
 active_configuration_name = swx.get_active_configuration_name(model.get_path_name())
 
 custom_property_manager = model.extension.custom_property_manager("")

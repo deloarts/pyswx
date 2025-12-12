@@ -5,9 +5,7 @@ PART TOOLS // EXPORT STEP
 from pathlib import Path
 from typing import Literal
 
-from pyswx.api.sldworks.interfaces.i_document_specification import (
-    IDocumentSpecification,
-)
+from pyswx.api.sldworks.interfaces.i_document_specification import IDocumentSpecification
 from pyswx.api.sldworks.interfaces.i_sldworks import ISldWorks
 from pyswx.api.swconst.enumerations import SWSaveAsOptionsE
 from pyswx.api.swconst.enumerations import SWSaveAsVersionE
@@ -17,14 +15,14 @@ from pyswx.tools.part_tools.open_part import open_part
 def export_part(
     swx: ISldWorks,
     part_path: Path,
-    export_type: Literal["step"],
+    export_type: Literal["step", "png"],
     export_path: Path | None = None,
     close_document: bool = False,
     save_document: bool = True,
     document_specification: IDocumentSpecification | None = None,
 ) -> None:
     """
-    Export a SolidWorks part to STEP format.
+    Export a SolidWorks part to STEP format or as image in PNG format.
 
     Args:
         swx (ISldWorks): The SolidWorks application instance.
@@ -51,9 +49,7 @@ def export_part(
         FileNotFoundError: Raised if the export fails and the step file does not exist.
     """
 
-    part_model, _ = open_part(
-        swx=swx, part_path=part_path, document_specification=document_specification
-    )
+    part_model, _ = open_part(swx=swx, part_path=part_path, document_specification=document_specification)
 
     if export_path is None:
         export_path = part_model.get_path_name().with_suffix(f".{export_type}")

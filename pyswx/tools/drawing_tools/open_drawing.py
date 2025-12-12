@@ -5,9 +5,7 @@ DRAWING TOOLS // OPEN DRAWING
 from pathlib import Path
 from typing import Tuple
 
-from pyswx.api.sldworks.interfaces.i_document_specification import (
-    IDocumentSpecification,
-)
+from pyswx.api.sldworks.interfaces.i_document_specification import IDocumentSpecification
 from pyswx.api.sldworks.interfaces.i_drawing_doc import IDrawingDoc
 from pyswx.api.sldworks.interfaces.i_model_doc_2 import IModelDoc2
 from pyswx.api.sldworks.interfaces.i_sldworks import ISldWorks
@@ -51,7 +49,7 @@ def open_drawing(
     drawing_open_spec.light_weight = True
     drawing_open_spec.silent = True
     drawing_open_spec.ignore_hidden_components = True
-    drawing_model = swx.open_doc7(specification=document_specification or drawing_open_spec)
+    drawing_model, warning, error = swx.open_doc7(specification=document_specification or drawing_open_spec)
 
     if drawing_open_spec.warning is not None:
         swx.logger.warning(drawing_open_spec.warning.name)
@@ -60,6 +58,12 @@ def open_drawing(
         swx.logger.error(drawing_open_spec.error.name)
         raise DocumentError(drawing_open_spec.error.name)
 
+    if warning is not None:
+        swx.logger.warning(warning.name)
+
+    if error is not None:
+        raise DocumentError(f"Failed to open document: {error.name}")
+
     if drawing_model is None:
         raise ValueError("No active document found")
 
@@ -67,10 +71,16 @@ def open_drawing(
     if model_type != SWDocumentTypesE.SW_DOC_DRAWING:
         raise ValueError(f"Active document is not a drawing: {model_type.name}")
 
-    drawing_model = swx.activate_doc_3(
+    drawing_model, error = swx.activate_doc_3(
         name=drawing_model.get_path_name(),
         use_user_preferences=False,
         option=SWRebuildOnActivationOptionsE.SW_REBUILD_ACTIVE_DOC,
     )
+
+    if error is not None:
+        raise DocumentError(f"Failed to open document: {error.name}")
+
+    if drawing_model is None:
+        raise DocumentError("Failed to activate document")
 
     return drawing_model, IDrawingDoc(drawing_model.com_object)

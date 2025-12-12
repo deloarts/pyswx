@@ -9,6 +9,7 @@ Status: 🟠
 
 from pathlib import Path
 from typing import List
+from typing import Tuple
 
 from pythoncom import VT_ARRAY
 from pythoncom import VT_BSTR
@@ -28,7 +29,8 @@ from pyswx.api.swconst.enumerations import SWFeatMgrPaneE
 from pyswx.api.swconst.enumerations import SWFileSaveErrorE
 from pyswx.api.swconst.enumerations import SWFileSaveWarningE
 from pyswx.api.swconst.enumerations import SWSaveAsOptionsE
-from pyswx.exceptions import DocumentError
+from pyswx.api.swconst.enumerations import SWSaveAsVersionE
+from pyswx.api.swconst.enumerations import SWStandardViewsE
 
 
 class IModelDoc2(BaseInterface):
@@ -2396,20 +2398,19 @@ class IModelDoc2(BaseInterface):
         """Obsolete. Superseded by IModelDoc2::Save3."""
         raise NotImplementedError
 
-    def save_3(self, options: SWSaveAsOptionsE | None) -> bool:
+    def save_3(
+        self, options: SWSaveAsOptionsE | None
+    ) -> Tuple[bool, SWFileSaveWarningE | None, SWFileSaveErrorE | None]:
         """
         Saves the current document.
 
         Reference:
         https://help.solidworks.com/2024/english/api/sldworksapi/SolidWorks.Interop.sldworks~SolidWorks.Interop.sldworks.IModelDoc2~Save3.html
-
-        Raises:
-            DocumentError: Raised if there is an error saving the document.
         """
         in_options = VARIANT(VT_I4, options.value) if options else VARIANT(VT_I4, 0)
 
-        out_errors = VARIANT(VT_BYREF | VT_I4, None)
         out_warnings = VARIANT(VT_BYREF | VT_I4, None)
+        out_errors = VARIANT(VT_BYREF | VT_I4, None)
 
         com_object = self.com_object.Save3(in_options, out_errors, out_warnings)
 
@@ -2419,9 +2420,13 @@ class IModelDoc2(BaseInterface):
 
         if out_errors.value != 0:
             out_errors = SWFileSaveErrorE(value=out_errors.value)
-            raise DocumentError(str(out_errors))
+            self.logger.error(out_errors.name)
 
-        return com_object
+        return (
+            bool(com_object),
+            out_warnings if isinstance(out_warnings, SWFileSaveWarningE) else None,
+            out_errors if isinstance(out_errors, SWFileSaveErrorE) else None,
+        )
 
     def save_as(self):
         """Obsolete. Superseded by IModelDocExtension::SaveAs."""
@@ -2435,9 +2440,38 @@ class IModelDoc2(BaseInterface):
         """Obsolete. Superseded by IModelDocExtension::SaveAs."""
         raise NotImplementedError
 
-    def save_as4(self):
-        """Obsolete. Superseded by IModelDocExtension::SaveAs."""
-        raise NotImplementedError
+    def save_as4(
+        self, name: Path, version: SWSaveAsVersionE | None, options: SWSaveAsOptionsE | None
+    ) -> Tuple[bool, SWFileSaveWarningE | None, SWFileSaveErrorE | None]:
+        """
+        Obsolete. Superseded by IModelDocExtension::SaveAs.
+
+        Saves the current document.
+
+        Reference: https://help.solidworks.com/2024/english/api/sldworksapi/solidworks.interop.sldworks~solidworks.interop.sldworks.imodeldoc2~saveas4.html
+        """
+        in_name = VARIANT(VT_BSTR, str(name))
+        in_version = VARIANT(VT_I4, version.value) if version else VARIANT(VT_I4, 0)
+        in_options = VARIANT(VT_I4, options.value) if options else VARIANT(VT_I4, 0)
+
+        out_warnings = VARIANT(VT_BYREF | VT_I4, None)
+        out_errors = VARIANT(VT_BYREF | VT_I4, None)
+
+        com_object = self.com_object.SaveAs4(in_name, in_version, in_options, out_errors, out_warnings)
+
+        if out_warnings.value != 0:
+            out_warnings = SWFileSaveWarningE(value=out_warnings.value)
+            self.logger.warning(out_warnings.name)
+
+        if out_errors.value != 0:
+            out_errors = SWFileSaveErrorE(value=out_errors.value)
+            self.logger.error(out_errors.name)
+
+        return (
+            bool(com_object),
+            out_warnings if isinstance(out_warnings, SWFileSaveWarningE) else None,
+            out_errors if isinstance(out_errors, SWFileSaveErrorE) else None,
+        )
 
     def save_as_silent(self):
         """Obsolete. Superseded by IModelDocExtension::SaveAs."""
@@ -2675,9 +2709,16 @@ class IModelDoc2(BaseInterface):
         """Obsolete. Superseded by IModelDoc2::ShowNameView2."""
         raise NotImplementedError
 
-    def show_named_view2(self):
-        """Shows the specified view."""
-        raise NotImplementedError
+    def show_named_view2(self, name: str, view_id: SWStandardViewsE):
+        """
+        Shows the specified view.
+
+        Reference: https://help.solidworks.com/2024/english/api/sldworksapi/SOLIDWORKS.Interop.sldworks~SOLIDWORKS.Interop.sldworks.IModelDoc2~ShowNamedView2.html
+        """
+        in_name = VARIANT(VT_BSTR, name)
+        in_view_id = VARIANT(VT_I4, view_id.value)
+
+        self.com_object.ShowNamedView2(in_name, in_view_id)
 
     def show_solid_body(self):
         """Shows the selected solid body."""
@@ -3084,12 +3125,23 @@ class IModelDoc2(BaseInterface):
         raise NotImplementedError
 
     def view_zoomin(self):
-        """Zooms the current view in by a factor of 20%."""
+        """
+        Zooms the current view in by a factor of 20%.
+
+        Reference:
+        https://help.solidworks.com/2024/english/api/sldworksapi/solidworks.interop.sldworks~solidworks.interop.sldworks.imodeldoc2~viewzoomin.html
+        """
+        self.com_object.ViewZoomin()
         raise NotImplementedError
 
     def view_zoomout(self):
-        """Zooms the current view out by a factor of 20%."""
-        raise NotImplementedError
+        """
+        Zooms the current view out by a factor of 20%.
+
+        Reference:
+        https://help.solidworks.com/2024/english/api/sldworksapi/SOLIDWORKS.Interop.sldworks~SOLIDWORKS.Interop.sldworks.IModelDoc2~ViewZoomout.html
+        """
+        self.com_object.ViewZoomout()
 
     def view_zoomto(self):
         """Zooms the view to the selected box."""
@@ -3104,8 +3156,13 @@ class IModelDoc2(BaseInterface):
         raise NotImplementedError
 
     def view_zoomtofit2(self):
-        """Zooms the currently active view to fit the screen."""
-        raise NotImplementedError
+        """
+        Zooms the currently active view to fit the screen.
+
+        Reference:
+        https://help.solidworks.com/2024/english/api/sldworksapi/solidworks.interop.sldworks~solidworks.interop.sldworks.imodeldoc2~viewzoomtofit2.html
+        """
+        self.com_object.ViewZoomtofit2()
 
     def view_zoom_to_selection(self):
         """Zooms the display to the selection."""
@@ -3118,4 +3175,4 @@ class IModelDoc2(BaseInterface):
         Reference:
         https://help.solidworks.com/2024/english/api/sldworksapi/SolidWorks.Interop.sldworks~SolidWorks.Interop.sldworks.IModelDoc2~WindowRedraw.html
         """
-        self.com_object.WindowRedraw
+        self.com_object.WindowRedraw()

@@ -7,6 +7,8 @@ https://help.solidworks.com/2024/english/api/sldworksapi/SOLIDWORKS.Interop.sldw
 Status: 🔴
 """
 
+from typing import Tuple
+
 from pythoncom import VT_BOOL
 from pythoncom import VT_BSTR
 from pythoncom import VT_BYREF
@@ -22,7 +24,6 @@ from pyswx.api.sldworks.interfaces.i_explode_step import IExplodeStep
 from pyswx.api.swconst.enumerations import SWChildComponentInBOMOptionE
 from pyswx.api.swconst.enumerations import SWConfigurationTypeE
 from pyswx.api.swconst.enumerations import SWCreateExplodeStepErrorE
-from pyswx.exceptions import DocumentError
 
 
 class IConfiguration(BaseInterface):
@@ -305,15 +306,12 @@ class IConfiguration(BaseInterface):
         reverse_ang: bool,
         rotate_about_origin: bool,
         auto_space_components_on_drag: bool,
-    ) -> IExplodeStep:
+    ) -> Tuple[IExplodeStep | None, SWCreateExplodeStepErrorE | None]:
         """
         Adds a regular (translate and rotate) explode step to the explode view of the active configuration.
 
         Reference:
         https://help.solidworks.com/2024/english/api/sldworksapi/SolidWorks.Interop.sldworks~SolidWorks.Interop.sldworks.IConfiguration~AddExplodeStep2.html
-
-        Raises:
-            DocumentError: Raised if there is an error.
         """
         in_expl_dist = VARIANT(VT_R8, expl_dist)
         in_expl_dir_index = VARIANT(VT_I4, expl_dir_index)
@@ -339,9 +337,12 @@ class IConfiguration(BaseInterface):
         )
         if out_errors.value != 0:
             out_errors = SWCreateExplodeStepErrorE(value=out_errors.value)
-            raise DocumentError(str(out_errors))
+            self.logger.error(out_errors.name)
 
-        return IExplodeStep(com_object)
+        return (
+            IExplodeStep(com_object) if com_object else None,
+            out_errors if isinstance(out_errors, SWCreateExplodeStepErrorE) else None,
+        )
 
     def get_root_component3(self, resolve: bool) -> IComponent2 | None:
         """

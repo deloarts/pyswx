@@ -6,7 +6,6 @@ drawing_template = next(Path("C:\\ProgramData\\SolidWorks\\SOLIDWORKS 2024\\temp
 def run(part_file_location: Path, drawing_file_location: Path):
     from pyswx import PySWX
     from pyswx.api.sldworks.interfaces.i_drawing_doc import IDrawingDoc
-    from pyswx.api.swconst.enumerations import SWDocumentTypesE
     from pyswx.api.swconst.enumerations import SWDwgPaperSizesE
     from pyswx.api.swconst.enumerations import SWRebuildOnActivationOptionsE
     from pyswx.api.swconst.enumerations import SWSaveAsVersionE
@@ -24,9 +23,10 @@ def run(part_file_location: Path, drawing_file_location: Path):
         advanced_save_as_options=None,
     )
 
-    model_doc = swx.activate_doc_3(
+    model_doc, _ = swx.activate_doc_3(
         drawing_file_location, use_user_preferences=False, option=SWRebuildOnActivationOptionsE.SW_REBUILD_ACTIVE_DOC
     )
+    assert model_doc
     drw_doc = IDrawingDoc(model_doc.com_object)
     assert drw_doc.com_object
 

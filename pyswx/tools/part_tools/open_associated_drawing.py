@@ -5,15 +5,14 @@ PART TOOLS // OPEN DRAWING
 from pathlib import Path
 from typing import Tuple
 
-from pyswx.api.sldworks.interfaces.i_document_specification import (
-    IDocumentSpecification,
-)
+from pyswx.api.sldworks.interfaces.i_document_specification import IDocumentSpecification
 from pyswx.api.sldworks.interfaces.i_drawing_doc import IDrawingDoc
 from pyswx.api.sldworks.interfaces.i_model_doc_2 import IModelDoc2
 from pyswx.api.sldworks.interfaces.i_sldworks import ISldWorks
 from pyswx.api.swconst.enumerations import SWDocumentTypesE
 from pyswx.api.swconst.enumerations import SWRebuildOnActivationOptionsE
 from pyswx.api.swconst.enumerations import SWSaveAsOptionsE
+from pyswx.exceptions import DocumentError
 from pyswx.tools.part_tools.open_part import open_part
 
 
@@ -45,22 +44,31 @@ def open_associated_drawing(
         ValueError: Raised if the active document is not a drawing.
     """
 
-    part_model, _ = open_part(
-        swx=swx, part_path=part_path, document_specification=document_specification
-    )
+    part_model, _ = open_part(swx=swx, part_path=part_path, document_specification=document_specification)
 
     drawing_path = part_model.get_path_name().with_suffix(".SLDDRW")
     if not drawing_path.exists():
         raise FileNotFoundError(f"Drawing file does not exist: {drawing_path}")
 
-    drawing_model = swx.open_doc6(
-        file_name=drawing_path, file_type=SWDocumentTypesE.SW_DOC_DRAWING
-    )
-    drawing_model = swx.activate_doc_3(
+    drawing_model, warning, error = swx.open_doc6(file_name=drawing_path, file_type=SWDocumentTypesE.SW_DOC_DRAWING)
+
+    if warning is not None:
+        swx.logger.warning(warning.name)
+
+    if error is not None:
+        raise DocumentError(f"Failed to open document: {error.name}")
+
+    drawing_model, error = swx.activate_doc_3(
         name=drawing_path,
         use_user_preferences=False,
         option=SWRebuildOnActivationOptionsE.SW_REBUILD_ACTIVE_DOC,
     )
+
+    if error is not None:
+        raise DocumentError(f"Failed to activate document: {error.name}")
+
+    if drawing_model is None:
+        raise ValueError("No active document found")
 
     model_type = drawing_model.get_type()
     if model_type != SWDocumentTypesE.SW_DOC_DRAWING:
