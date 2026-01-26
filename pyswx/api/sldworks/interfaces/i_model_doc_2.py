@@ -3132,7 +3132,6 @@ class IModelDoc2(BaseInterface):
         https://help.solidworks.com/2024/english/api/sldworksapi/solidworks.interop.sldworks~solidworks.interop.sldworks.imodeldoc2~viewzoomin.html
         """
         self.com_object.ViewZoomin()
-        raise NotImplementedError
 
     def view_zoomout(self):
         """
