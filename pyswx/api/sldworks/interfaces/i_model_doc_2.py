@@ -2210,13 +2210,23 @@ class IModelDoc2(BaseInterface):
         """Gets whether the specified light is fixed."""
         raise NotImplementedError
 
-    def is_opened_read_only(self):
-        """Gets whether a SOLIDWORKS document is open in read-only mode."""
-        raise NotImplementedError
+    def is_opened_read_only(self) -> bool:
+        """
+        Gets whether a SOLIDWORKS document is open in read-only mode.
 
-    def is_opened_view_only(self):
-        """Gets whether a SOLIDWORKS document is open in view-only mode."""
-        raise NotImplementedError
+        Reference:
+        https://help.solidworks.com/2018/english/api/sldworksapi/SOLIDWORKS.Interop.sldworks~SOLIDWORKS.Interop.sldworks.IModelDoc2~IsOpenedReadOnly.html
+        """
+        return self.com_object.IsOpenedReadOnly()
+
+    def is_opened_view_only(self) -> bool:
+        """
+        Gets whether a SOLIDWORKS document is open in view-only mode.
+
+        Reference:
+        https://help.solidworks.com/2018/english/api/sldworksapi/SolidWorks.Interop.sldworks~SolidWorks.Interop.sldworks.IModelDoc2~IsOpenedViewOnly.html
+        """
+        return self.com_object.IsOpenedViewOnly()
 
     def is_tessellation_valid(self):
         """Gets whether the current set of facets is valid."""
